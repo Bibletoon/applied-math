@@ -7,7 +7,7 @@ public static class OptimisationMethodRunner
         decimal b,
         decimal accuracy,
         Func<decimal, decimal> function,
-        IOptimisationMethodLogic optimisationMethod)
+        IOptimisationMethod optimisationMethod)
     {
         var callsCounterFunc = new FunctionCallsCounter<decimal, decimal>(function);
         int iterationsCount = 0;

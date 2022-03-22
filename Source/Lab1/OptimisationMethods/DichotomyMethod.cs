@@ -1,6 +1,6 @@
 ﻿namespace Lab1.OptimisationMethods;
 
-public class DichotomyMethod : IOptimisationMethodLogic
+public class DichotomyMethod : IOptimisationMethod
 {
     private decimal _delta;
 
