@@ -2,14 +2,14 @@
 
 public class DichotomyMethod : IOptimisationMethod
 {
-    private decimal _delta;
+    private double _delta;
 
-    public DichotomyMethod(decimal delta)
+    public DichotomyMethod(double delta)
     {
         _delta = delta;
     }
 
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public (double, double) FindNewInterval(double a, double b, Func<double, double> function)
     {
         var x1 = (a + b) / 2 - _delta;
         var x2 = (a + b) / 2 + _delta;

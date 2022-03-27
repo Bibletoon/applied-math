@@ -1,3 +1,3 @@
 ﻿namespace Lab1;
 
-public record RunnerResult(decimal result, int functionCallsCount, int iterationsCount, List<(decimal, decimal)> intervals);
+public record RunnerResult(double result, int functionCallsCount, int iterationsCount, List<(double, double)> intervals);

@@ -5,15 +5,15 @@ namespace Lab1.OptimisationMethods;
 public class FibonacciMethod : IOptimisationMethod
 {
     private readonly int _n;
-    private decimal? _x1;
-    private decimal? _x2;
+    private double? _x1;
+    private double? _x2;
 
     public FibonacciMethod(int n)
     {
         _n = n;
     }
 
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public (double, double) FindNewInterval(double a, double b, Func<double, double> function)
     {
         var x1 = _x1 ?? a + (FibonacciCounter.GetNthNumber(_n - 2) / FibonacciCounter.GetNthNumber(_n)) * (b-a);
         var x2 = _x2 ?? a + (FibonacciCounter.GetNthNumber(_n - 1) / FibonacciCounter.GetNthNumber(_n)) * (b-a);

@@ -2,5 +2,5 @@
 
 public interface IOptimisationMethod
 {
-    public (decimal,decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function);
+    public (double,double) FindNewInterval(double a, double b, Func<double, double> function);
 }

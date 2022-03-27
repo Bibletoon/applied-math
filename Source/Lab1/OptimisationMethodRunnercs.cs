@@ -3,16 +3,16 @@
 public static class OptimisationMethodRunner
 {
     public static RunnerResult FindFunctionMinimum(
-        decimal a,
-        decimal b,
-        decimal accuracy,
-        Func<decimal, decimal> function,
+        double a,
+        double b,
+        double accuracy,
+        Func<double, double> function,
         IOptimisationMethod optimisationMethod,
         int iterationsLimit = int.MaxValue)
     {
-        var callsCounterFunc = new FunctionCallsCounter<decimal, decimal>(function);
+        var callsCounterFunc = new FunctionCallsCounter<double, double>(function);
         int iterationsCount = 0;
-        List<(decimal, decimal)> intervalsHistory = new List<(decimal, decimal)>() { (a, b) };
+        List<(double, double)> intervalsHistory = new List<(double, double)>() { (a, b) };
 
         while (Math.Abs(b - a) >= accuracy && iterationsCount <= iterationsLimit)
         {

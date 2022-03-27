@@ -4,11 +4,11 @@ public class ParabolaMethod : IOptimisationMethod
 {
     private Random _random = new Random();
     
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public (double, double) FindNewInterval(double a, double b, Func<double, double> function)
     {
-        decimal c = (decimal)_random.NextDouble() * (b - a) + a;
+        double c = (double)_random.NextDouble() * (b - a) + a;
 
-        decimal u = c - (((c - a) * (c - a)) * (function.Invoke(c) - function.Invoke(b)) -
+        double u = c - (((c - a) * (c - a)) * (function.Invoke(c) - function.Invoke(b)) -
                          ((c - b) * (c - b)) * (function.Invoke(c) - function.Invoke(a))) /
             (2 * ((c - a) * (function.Invoke(c) - function.Invoke(b)) -
                   (c - b) * (function.Invoke(c) - function.Invoke(a))));

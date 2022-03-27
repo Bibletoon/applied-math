@@ -2,9 +2,9 @@
 
 public class GoldenRatioMethod : IOptimisationMethod
 {
-    private static readonly decimal GoldenRatioProportion = (decimal)((1+Math.Sqrt(5))/2);
+    private static readonly double GoldenRatioProportion = (double)((1+Math.Sqrt(5))/2);
 
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public (double, double) FindNewInterval(double a, double b, Func<double, double> function)
     {
         var x1 = b - (b - a) / GoldenRatioProportion;
         var x2 = a + (b - a) / GoldenRatioProportion;
