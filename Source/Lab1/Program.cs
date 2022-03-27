@@ -7,16 +7,16 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        double acc = 1e-8;
+        double acc = 1e-5;
 
-        double a = 0.1;
+        double a = -4;
         double b = 2;
 
         var brent = new BrentMethod(acc);
         var parabola = new ParabolaMethod();
         var gold = new GoldenRatioMethod();
         
-        var func = (double x) => (Math.Log10(1 / x) + Math.Pow(x, 0.7));
+        var func = (double x) => (Math.Pow(Math.E,Math.Sin(x))*x*x);
         
         var brentRes = OptimisationMethodRunner.FindFunctionMinimum(a, b, acc, func, brent);
         var parabolaRes = OptimisationMethodRunner.FindFunctionMinimum(a, b, acc, func, parabola);

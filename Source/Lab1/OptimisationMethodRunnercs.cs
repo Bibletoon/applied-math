@@ -14,13 +14,27 @@ public static class OptimisationMethodRunner
         int iterationsCount = 0;
         List<(double, double)> intervalsHistory = new List<(double, double)>() { (a, b) };
 
-        while (Math.Abs(b - a) >= accuracy && iterationsCount <= iterationsLimit)
+        while (Math.Abs(b - a) >= accuracy && Math.Abs(a) >= accuracy && Math.Abs(b) >= accuracy && iterationsCount <= iterationsLimit)
         {
             iterationsCount++;
             (a, b) = optimisationMethod.FindNewInterval(a, b, callsCounterFunc.Invoke);
             intervalsHistory.Add((a, b));
         }
 
-        return new RunnerResult((a + b) / 2, callsCounterFunc.CallsCount, iterationsCount, intervalsHistory);
+        double result;
+        
+        if (Math.Abs(b - a) < accuracy)
+        {
+            result = (a + b) / 2;
+        } else if (Math.Abs(a) < accuracy)
+        {
+            result = a;
+        }
+        else
+        {
+            result = b;
+        }
+
+        return new RunnerResult(result, callsCounterFunc.CallsCount, iterationsCount, intervalsHistory);
     }
 }
