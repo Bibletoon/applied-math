@@ -1,4 +1,5 @@
-﻿using Lab1.OptimizationContexts;
+﻿using Lab1.Exceptions;
+using Lab1.OptimizationContexts;
 using Lab1.Tools;
 using static System.Math;
 
@@ -59,7 +60,7 @@ public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
             if (fu <= fv || Abs(v - x) < _equalityAccuracy || Abs(v - w) < _equalityAccuracy)
                 return new BrentOptimizationContext(a, b, x, w, u, currentDistance, previousDistance);
 
-            return new BrentOptimizationContext(a, b, x, w, v, currentDistance, previousDistance);
+            throw new CombinedBrentMethodException(context, u, fu);
         }
 
         if (u < x)

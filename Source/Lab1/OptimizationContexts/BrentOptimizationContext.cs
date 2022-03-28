@@ -2,7 +2,7 @@
 
 namespace Lab1.OptimizationContexts;
 
-public class BrentOptimizationContext : IOptimizationContext
+public record BrentOptimizationContext : IOptimizationContext
 {
     public BrentOptimizationContext(double a, double b)
     {
