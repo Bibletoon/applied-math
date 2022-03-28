@@ -1,6 +1,8 @@
-﻿namespace Lab1.OptimisationMethods;
+﻿using Lab1.OptimizationContexts;
 
-public interface IOptimisationMethod
+namespace Lab1.OptimisationMethods;
+
+public interface IOptimisationMethod<TContext> where TContext : IOptimizationContext
 {
-    public (double,double) FindNewInterval(double a, double b, Func<double, double> function);
+    public TContext FindNewInterval(TContext context, Func<double, double> function);
 }

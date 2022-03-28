@@ -1,52 +1,46 @@
-﻿namespace Lab1.OptimisationMethods;
+﻿using Lab1.OptimizationContexts;
 
-public class ParabolaMethod : IOptimisationMethod
+namespace Lab1.OptimisationMethods;
+
+public class ParabolaMethod : IOptimisationMethod<ParabolaOptimisationContext>
 {
-    private Random _random = new Random();
-    private double _c;
-    private bool _firstIteration = true;
-    
-    public (double, double) FindNewInterval(double a, double b, Func<double, double> function)
+    private readonly Random _random = new Random();
+
+    public ParabolaOptimisationContext FindNewInterval(ParabolaOptimisationContext context, Func<double, double> function)
     {
-        if (_firstIteration)
-        {
-            _c = _random.NextDouble() * (b - a) + a;
-            _firstIteration = false;
-        }
+        var (a, b) = (context.A, context.B);
+        
+        var c = context.C ?? _random.NextDouble() * (b - a) + a;
 
-        double u = _c - (((_c - a) * (_c - a)) * (function.Invoke(_c) - function.Invoke(b)) -
-                         ((_c - b) * (_c - b)) * (function.Invoke(_c) - function.Invoke(a))) /
-            (2 * ((_c - a) * (function.Invoke(_c) - function.Invoke(b)) -
-                  (_c - b) * (function.Invoke(_c) - function.Invoke(a))));
+        double u = c - (((c - a) * (c - a)) * (function.Invoke(c) - function.Invoke(b)) -
+                             ((c - b) * (c - b)) * (function.Invoke(c) - function.Invoke(a))) /
+            (2 * ((c - a) * (function.Invoke(c) - function.Invoke(b)) -
+                  (c - b) * (function.Invoke(c) - function.Invoke(a))));
 
-        if (_c < u)
+        if (c < u)
         {
-            if (function.Invoke(_c) < function.Invoke(u))
+            if (function.Invoke(c) < function.Invoke(u))
             {
-                return (a, u);
+                return new ParabolaOptimisationContext(a, u, c);
             }
             else
             {
-                var c = _c;
-                _c = u;
-                if (u <= c || u >= b)
-                    _firstIteration = true;
-                return (c, b);
+                double? cache = (u <= c || u >= b) ? null : u;
+                
+                return new ParabolaOptimisationContext(c, b, cache);
             }
         }
         else
         {
-            if (function.Invoke(_c) < function.Invoke(u))
+            if (function.Invoke(c) < function.Invoke(u))
             {
-                return (u, b);
+                return new ParabolaOptimisationContext(u, b, c);
             }
             else
             {
-                var c = _c;
-                _c = u;
-                if (u <= a || u >= c)
-                    _firstIteration = true;
-                return (a, c);
+                double? cache = (u <= a || u >= c) ? null : u;
+                
+                return new ParabolaOptimisationContext(a, c, cache);
             }
         }
     }

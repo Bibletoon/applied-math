@@ -1,8 +1,9 @@
-﻿using Lab1.Tools;
+﻿using Lab1.OptimizationContexts;
+using Lab1.Tools;
 
 namespace Lab1.OptimisationMethods;
 
-public class FibonacciMethod : IOptimisationMethod
+public class FibonacciMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
     private readonly int _n;
     private double? _x1;
@@ -13,8 +14,9 @@ public class FibonacciMethod : IOptimisationMethod
         _n = n;
     }
 
-    public (double, double) FindNewInterval(double a, double b, Func<double, double> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<double, double> function)
     {
+        var (a, b) = (context.A, context.B);
         var x1 = _x1 ?? a + (FibonacciCounter.GetNthNumber(_n - 2) / FibonacciCounter.GetNthNumber(_n)) * (b-a);
         var x2 = _x2 ?? a + (FibonacciCounter.GetNthNumber(_n - 1) / FibonacciCounter.GetNthNumber(_n)) * (b-a);
 
@@ -22,13 +24,13 @@ public class FibonacciMethod : IOptimisationMethod
         {
             _x1 = x2;
             _x2 = b - (_x1 - x1);
-            return (x1, b);
+            return new BoundedOptimizationContext(x1, b);
         }
         else
         {
             _x2 = x1;
             _x1 = a + (x2 - _x2);
-            return (a, x2);
+            return new BoundedOptimizationContext(a, x2);
         }
     }
 }
