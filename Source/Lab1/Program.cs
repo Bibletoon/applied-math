@@ -7,22 +7,20 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        double acc = 1e-5;
+        double acc = 1e-2;
         var delta = 0.003d;
 
-        var method = new DichotomyMethod(delta);
-        var context = new BoundedOptimizationContext(-16, 16);
+        var method = new CombinedBrentMethod(acc);
+        var context = new BrentOptimizationContext(-16, 16);
 
         var res = OptimisationMethodRunner
             .FindFunctionMinimum(
                 context,
                 acc,
+                10,
                 arg => Math.Exp(Math.Sin(arg)) * arg * arg,
                 method);
-
-        var interval = res.Intervals[^1];
-        var point = interval.A + (interval.B - interval.A) / 2;
-
-        Console.WriteLine(point);
+        
+        Console.WriteLine(res);
     }
 }

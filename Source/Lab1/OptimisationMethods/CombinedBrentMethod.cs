@@ -1,85 +1,83 @@
 ﻿using Lab1.OptimizationContexts;
+using Lab1.Tools;
 using static System.Math;
 
 namespace Lab1.OptimisationMethods;
 
 public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
 {
-    private static readonly double K = ((3 - Sqrt(5)) / 2);
-    
+    private readonly double _equalityAccuracy;
+
+    public CombinedBrentMethod(double equalityAccuracy)
+    {
+        _equalityAccuracy = equalityAccuracy;
+    }
+
     public BrentOptimizationContext FindNewInterval(BrentOptimizationContext context, Func<double, double> function)
     {
-        var (a, c, x) = (context.A, context.B, context.X);
-        var (fa, fc, fu, fx) = (function(a), function(c), function(x), function(x));
+        var (a, b) = (context.A, context.B);
+        var (x, w, v) = (context.X, context.W, context.V);
+        var (fx, fw, fv) = (function(x), function(w), function(v));
 
+        var g = context.PreviousDistance / 2;
+        var previousDistance = context.CurrentDistance;
+
+        var uq = CalculateParabolaVertex(x, w, v, fx, fw, fv);
         double u;
 
-        if (fa == fc && fa == fu)
+        if (uq is null || !(a <= uq.Value && uq.Value <= b) || Abs(uq.Value - x) > g)
         {
-            u = x < (c - a) / 2 
-                ? x + K * (c - x) 
-                : x - K * (x - a);
+            if (x < (a + b) / 2)
+            {
+                u = x + Constants.GoldenRatioProportion * (b - x);
+                previousDistance = b - x;
+            }
+            else
+            {
+                u = x - Constants.GoldenRatioProportion * (x - a);
+                previousDistance = x - a;
+            }
         }
         else
         {
-            var mid = a + (c - a) / 2;
-            u = CountU(a, mid, c, fa, function(mid), fc);
+            u = uq.Value;
         }
 
-        if (!(a <= u && u <= c))
-        {
-            if (x < (c - a) / 2)
-                u = x + K * (c - x);
-            else
-                u = x - K * (x - a);
-        }
+        var currentDistance = Abs(u - x);
+        var fu = function(u);
 
-        fu = function(u);
-
-        if (fu <= fx)
+        if (fu > fx)
         {
-            if (u >= x)
-                a = x;
-            else
-                c = x;
-
-            return new BrentOptimizationContext(a, c, u, x, context.W);
-        }
-        else
-        {
-            if (u >= x)
-                c = u;
-            else
+            if (u < x)
                 a = u;
-
-            if (fu <= function(context.W) || context.W == x)
-                return new BrentOptimizationContext(a, c, x, u, context.W);
             else
-                return new BrentOptimizationContext(a, c, x, context.W, u);
+                b = u;
+
+            if (fu <= fw || Abs(w - x) < _equalityAccuracy)
+                return new BrentOptimizationContext(a, b, x, u, w, currentDistance, previousDistance);
+
+            if (fu <= fv || Abs(v - x) < _equalityAccuracy || Abs(v - w) < _equalityAccuracy)
+                return new BrentOptimizationContext(a, b, x, w, u, currentDistance, previousDistance);
+
+            return new BrentOptimizationContext(a, b, x, w, v, currentDistance, previousDistance);
         }
+
+        if (u < x)
+            b = x;
+        else
+            a = x;
+
+        return new BrentOptimizationContext(a, b, u, x, w, currentDistance, previousDistance);
     }
 
-    private double CountC1(double a, double b, double c, double a1, double b1, double c1)
+    private static double? CalculateParabolaVertex(double a, double b, double c, double fa, double fb, double fc)
     {
-        var a2 = Pow((double) a, 2);
-        var b2 = Pow((double) b, 2);
-        var c2 = Pow((double) c, 2);
+        var numerator = Pow(b - a, 2) * (fb - fc) - Pow(b - c, 2) * (fb - fa);
+        var denominator = 2 * ((b - a) * (fb - fc) - (b - c) * (fb - fa));
 
-        return -a * b1 + a * c1 + b * a1 + c * (b2 - a2 - b * c2) / ((b1 - c1) * (a2 - a1 * b1 - a1 * c1 + b1 * c1));
+        if (denominator is 0)
+            return null;
+
+        return b - numerator / denominator;
     }
-
-    private double CountC2(double a, double b, double c, double a1, double b1, double c1)
-    {
-        var a2 = Pow((double) a1, 2);
-        var b2 = Pow((double) b1, 2);
-        var C1 = CountC1(a, b, c, a1, b1, c1);
-
-        return (b - a - C1 * (b1 - a1)) / (b2 - a2);
-    }
-
-    private double CountU(double a, double b, double c, double a1, double b1, double c1)
-    {
-        return -(CountC1(a, b, c, a1, b1, c1) / 2 * CountC2(a, b, c, a1, b1, c1));
-    }
-
 }

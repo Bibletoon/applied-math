@@ -1,4 +1,6 @@
-﻿namespace Lab1.OptimizationContexts;
+﻿using Lab1.Tools;
+
+namespace Lab1.OptimizationContexts;
 
 public class BrentOptimizationContext : IOptimizationContext
 {
@@ -6,27 +8,33 @@ public class BrentOptimizationContext : IOptimizationContext
     {
         A = a;
         B = b;
-        X = W = V = a + (b - a) / 2;
+        X = W = V = a + Constants.GoldenRatioProportion * (b - a);
+        CurrentDistance = PreviousDistance = b - a;
     }
-    
-    public BrentOptimizationContext(double a, double b, double x, double w, double v)
+
+    public BrentOptimizationContext(
+        double a, 
+        double b, 
+        double x, 
+        double w, 
+        double v,
+        double currentDistance, 
+        double previousDistance)
     {
         A = a;
         B = b;
         X = x;
         W = w;
         V = v;
+        CurrentDistance = currentDistance;
+        PreviousDistance = previousDistance;
     }
 
     public double A { get; }
     public double B { get; }
-    
-    // Точка, соответсвующая наименьшиму значение функции
     public double X { get; }
-    
-    // Точка, соответсвующая второму снизу значению функции
     public double W { get; }
-    
-    // Предыдущее значение W
     public double V { get; }
+    public double CurrentDistance { get; }
+    public double PreviousDistance { get; }
 }
