@@ -1,5 +1,4 @@
-﻿using Lab1.Exceptions;
-using Lab1.OptimizationContexts;
+﻿using Lab1.OptimizationContexts;
 using Lab1.Tools;
 using static System.Math;
 
