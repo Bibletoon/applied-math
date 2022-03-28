@@ -11,7 +11,7 @@ public static class Program
         var delta = 0.003d;
 
         var method = new DichotomyMethod(delta);
-        var context = new BoundedOptimizationContext(-16m, 16m);
+        var context = new BoundedOptimizationContext(-16, 16);
 
         var res = OptimisationMethodRunner
             .FindFunctionMinimum(

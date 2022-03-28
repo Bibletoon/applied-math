@@ -2,14 +2,14 @@
 
 public class BrentOptimizationContext : IOptimizationContext
 {
-    public BrentOptimizationContext(decimal a, decimal b)
+    public BrentOptimizationContext(double a, double b)
     {
         A = a;
         B = b;
         X = W = V = a + (b - a) / 2;
     }
     
-    public BrentOptimizationContext(decimal a, decimal b, decimal x, decimal w, decimal v)
+    public BrentOptimizationContext(double a, double b, double x, double w, double v)
     {
         A = a;
         B = b;
@@ -18,15 +18,15 @@ public class BrentOptimizationContext : IOptimizationContext
         V = v;
     }
 
-    public decimal A { get; }
-    public decimal B { get; }
+    public double A { get; }
+    public double B { get; }
     
     // Точка, соответсвующая наименьшиму значение функции
-    public decimal X { get; }
+    public double X { get; }
     
     // Точка, соответсвующая второму снизу значению функции
-    public decimal W { get; }
+    public double W { get; }
     
     // Предыдущее значение W
-    public decimal V { get; }
+    public double V { get; }
 }

@@ -5,14 +5,14 @@ namespace Lab1.OptimisationMethods;
 
 public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
 {
-    private static readonly decimal K = (decimal) ((3 - Sqrt(5)) / 2);
+    private static readonly double K = ((3 - Sqrt(5)) / 2);
     
-    public BrentOptimizationContext FindNewInterval(BrentOptimizationContext context, Func<decimal, decimal> function)
+    public BrentOptimizationContext FindNewInterval(BrentOptimizationContext context, Func<double, double> function)
     {
         var (a, c, x) = (context.A, context.B, context.X);
         var (fa, fc, fu, fx) = (function(a), function(c), function(x), function(x));
 
-        decimal u;
+        double u;
 
         if (fa == fc && fa == fu)
         {
@@ -59,26 +59,27 @@ public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
         }
     }
 
-    private decimal CountC1(decimal a, decimal b, decimal c, decimal a1, decimal b1, decimal c1)
+    private double CountC1(double a, double b, double c, double a1, double b1, double c1)
     {
-        var a2 = (decimal) Pow((double) a, 2);
-        var b2 = (decimal) Pow((double) b, 2);
-        var c2 = (decimal) Pow((double) c, 2);
+        var a2 = Pow((double) a, 2);
+        var b2 = Pow((double) b, 2);
+        var c2 = Pow((double) c, 2);
 
         return -a * b1 + a * c1 + b * a1 + c * (b2 - a2 - b * c2) / ((b1 - c1) * (a2 - a1 * b1 - a1 * c1 + b1 * c1));
     }
 
-    private decimal CountC2(decimal a, decimal b, decimal c, decimal a1, decimal b1, decimal c1)
+    private double CountC2(double a, double b, double c, double a1, double b1, double c1)
     {
-        var a2 = (decimal) Pow((double) a1, 2);
-        var b2 = (decimal) Pow((double) b1, 2);
+        var a2 = Pow((double) a1, 2);
+        var b2 = Pow((double) b1, 2);
         var C1 = CountC1(a, b, c, a1, b1, c1);
 
         return (b - a - C1 * (b1 - a1)) / (b2 - a2);
     }
 
-    private decimal CountU(decimal a, decimal b, decimal c, decimal a1, decimal b1, decimal c1)
+    private double CountU(double a, double b, double c, double a1, double b1, double c1)
     {
         return -(CountC1(a, b, c, a1, b1, c1) / 2 * CountC2(a, b, c, a1, b1, c1));
     }
+
 }
