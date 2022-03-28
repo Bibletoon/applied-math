@@ -59,8 +59,6 @@ public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
 
             if (fu <= fv || Abs(v - x) < _equalityAccuracy || Abs(v - w) < _equalityAccuracy)
                 return new BrentOptimizationContext(a, b, x, w, u, currentDistance, previousDistance);
-
-            throw new CombinedBrentMethodException(context, u, fu);
         }
 
         if (u < x)
