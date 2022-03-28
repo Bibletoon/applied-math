@@ -1,6 +1,6 @@
 ﻿namespace Lab1.OptimizationContexts;
 
-public class ParabolaOptimisationContext : IOptimizationContext
+public record ParabolaOptimisationContext : IOptimizationContext
 {
     public ParabolaOptimisationContext(double a, double b)
     {

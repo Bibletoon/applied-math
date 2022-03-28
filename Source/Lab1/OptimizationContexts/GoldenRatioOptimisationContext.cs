@@ -1,6 +1,6 @@
 ﻿namespace Lab1.OptimizationContexts;
 
-public class GoldenRatioOptimisationContext : IOptimizationContext
+public record GoldenRatioOptimisationContext : IOptimizationContext
 {
     public GoldenRatioOptimisationContext(double a, double b)
     {

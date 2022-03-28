@@ -1,6 +1,6 @@
 ﻿namespace Lab1.OptimizationContexts;
 
-public class BoundedOptimizationContext : IOptimizationContext
+public record BoundedOptimizationContext : IOptimizationContext
 {
     public BoundedOptimizationContext(double a, double b)
     {
