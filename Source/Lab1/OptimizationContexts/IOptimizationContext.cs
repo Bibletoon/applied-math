@@ -2,6 +2,6 @@
 
 public interface IOptimizationContext
 {
-    public double A { get; }
-    public double B { get; }
+    double A { get; }
+    double B { get; }
 }
