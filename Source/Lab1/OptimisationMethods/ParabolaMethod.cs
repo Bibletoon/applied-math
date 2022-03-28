@@ -4,38 +4,55 @@ namespace Lab1.OptimisationMethods;
 
 public class ParabolaMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
-    private Random _random = new Random();
+    private readonly Random _random = new Random();
+    private double _c;
+    private bool _firstIteration = true;
     
-    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<decimal, decimal> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
-        decimal c = (decimal)_random.NextDouble() * (b - a) + a;
 
-        decimal u = c - (((c - a) * (c - a)) * (function.Invoke(c) - function.Invoke(b)) -
-                         ((c - b) * (c - b)) * (function.Invoke(c) - function.Invoke(a))) /
-            (2 * ((c - a) * (function.Invoke(c) - function.Invoke(b)) -
-                  (c - b) * (function.Invoke(c) - function.Invoke(a))));
-
-        if (c < u)
+        if (_firstIteration)
         {
-            if (function.Invoke(c) < function.Invoke(u))
+            _c = _random.NextDouble() * (b - a) + a;
+            _firstIteration = false;
+        }
+
+        double u = _c - (((_c - a) * (_c - a)) * (function.Invoke(_c) - function.Invoke(b)) -
+                         ((_c - b) * (_c - b)) * (function.Invoke(_c) - function.Invoke(a))) /
+            (2 * ((_c - a) * (function.Invoke(_c) - function.Invoke(b)) -
+                  (_c - b) * (function.Invoke(_c) - function.Invoke(a))));
+
+        if (_c < u)
+        {
+            if (function.Invoke(_c) < function.Invoke(u))
             {
                 return new BoundedOptimizationContext(a, u);
             }
             else
             {
-                return new BoundedOptimizationContext(c, b);
+                var c = _c;
+                _c = u;
+                if (u <= c || u >= b)
+                    _firstIteration = true;
+                
+                return new BoundedOptimizationContext(_c, b);
             }
         }
         else
         {
-            if (function.Invoke(c) < function.Invoke(u))
+            if (function.Invoke(_c) < function.Invoke(u))
             {
                 return new BoundedOptimizationContext(u, b);
             }
             else
             {
-                return new BoundedOptimizationContext(a, c);
+                var c = _c;
+                _c = u;
+                if (u <= c || u >= b)
+                    _firstIteration = true;
+                
+                return new BoundedOptimizationContext(a, _c);
             }
         }
     }

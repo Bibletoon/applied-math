@@ -6,15 +6,15 @@ namespace Lab1.OptimisationMethods;
 public class FibonacciMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
     private readonly int _n;
-    private decimal? _x1;
-    private decimal? _x2;
+    private double? _x1;
+    private double? _x2;
 
     public FibonacciMethod(int n)
     {
         _n = n;
     }
 
-    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<decimal, decimal> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
         var x1 = _x1 ?? a + (FibonacciCounter.GetNthNumber(_n - 2) / FibonacciCounter.GetNthNumber(_n)) * (b-a);

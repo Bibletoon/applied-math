@@ -4,9 +4,9 @@ namespace Lab1.OptimisationMethods;
 
 public class GoldenRatioMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
-    private static readonly decimal GoldenRatioProportion = (decimal) ((1 + Math.Sqrt(5)) / 2);
+    private static readonly double GoldenRatioProportion = (1 + Math.Sqrt(5)) / 2;
 
-    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<decimal, decimal> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
         var x1 = b - (b - a) / GoldenRatioProportion;

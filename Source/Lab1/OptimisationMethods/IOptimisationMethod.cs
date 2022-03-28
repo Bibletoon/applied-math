@@ -4,5 +4,5 @@ namespace Lab1.OptimisationMethods;
 
 public interface IOptimisationMethod<TContext> where TContext : IOptimizationContext
 {
-    public TContext FindNewInterval(TContext context, Func<decimal, decimal> function);
+    public TContext FindNewInterval(TContext context, Func<double, double> function);
 }

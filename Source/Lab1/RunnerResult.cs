@@ -3,7 +3,7 @@
 namespace Lab1;
 
 public record RunnerResult<T>(
-    decimal Result, 
+    double Result, 
     int FunctionCallsCount, 
     int IterationsCount, 
     IReadOnlyList<T> Intervals) where T : IOptimizationContext;

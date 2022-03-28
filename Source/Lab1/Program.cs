@@ -7,8 +7,8 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        var acc = 1m / 100;
-        var delta = 0.003m;
+        double acc = 1e-5;
+        var delta = 0.003d;
 
         var method = new DichotomyMethod(delta);
         var context = new BoundedOptimizationContext(-16m, 16m);
@@ -17,7 +17,7 @@ public static class Program
             .FindFunctionMinimum(
                 context,
                 acc,
-                arg => (decimal) Math.Exp(Math.Sin((double) arg)) * arg * arg,
+                arg => Math.Exp(Math.Sin(arg)) * arg * arg,
                 method);
 
         var interval = res.Intervals[^1];

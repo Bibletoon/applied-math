@@ -6,24 +6,41 @@ public static class OptimisationMethodRunner
 {
     public static RunnerResult<TContext> FindFunctionMinimum<TContext>(
         TContext context,
-        decimal accuracy,
-        Func<decimal, decimal> function,
+        double accuracy,
+        Func<double, double> function,
         IOptimisationMethod<TContext> optimisationMethod,
         int iterationsLimit = int.MaxValue) where TContext : IOptimizationContext
     {
-        var callsCounterFunc = new FunctionCallsCounter<decimal, decimal>(function);
+        var callsCounterFunc = new FunctionCallsCounter<double, double>(function);
         int iterationsCount = 0;
         List<TContext> intervalsHistory = new List<TContext>() { context };
 
-        while (Math.Abs(context.B - context.A) >= accuracy && iterationsCount <= iterationsLimit)
+        while (Math.Abs(context.B - context.A) >= accuracy && 
+               Math.Abs(context.A) >= accuracy && 
+               Math.Abs(context.B) >= accuracy && 
+               iterationsCount <= iterationsLimit)
         {
             iterationsCount++;
             context = optimisationMethod.FindNewInterval(context, callsCounterFunc.Invoke);
             intervalsHistory.Add(context);
         }
+        
+        double result;
+        
+        if (Math.Abs(context.B - context.A) < accuracy)
+        {
+            result = (context.A + context.B) / 2;
+        } else if (Math.Abs(context.A) < accuracy)
+        {
+            result = context.A;
+        }
+        else
+        {
+            result = context.B;
+        }
 
         return new RunnerResult<TContext>(
-            (context.A + context.B) / 2,
+            result,
             callsCounterFunc.CallsCount, 
             iterationsCount, 
             intervalsHistory);
