@@ -1,3 +1,9 @@
-﻿namespace Lab1;
+﻿using Lab1.OptimizationContexts;
 
-public record RunnerResult(decimal result, int functionCallsCount, int iterationsCount, List<(decimal, decimal)> intervals);
+namespace Lab1;
+
+public record RunnerResult<T>(
+    decimal Result, 
+    int FunctionCallsCount, 
+    int IterationsCount, 
+    IReadOnlyList<T> Intervals) where T : IOptimizationContext;

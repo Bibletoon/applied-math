@@ -1,11 +1,14 @@
-﻿namespace Lab1.OptimisationMethods;
+﻿using Lab1.OptimizationContexts;
 
-public class ParabolaMethod : IOptimisationMethod
+namespace Lab1.OptimisationMethods;
+
+public class ParabolaMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
     private Random _random = new Random();
     
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<decimal, decimal> function)
     {
+        var (a, b) = (context.A, context.B);
         decimal c = (decimal)_random.NextDouble() * (b - a) + a;
 
         decimal u = c - (((c - a) * (c - a)) * (function.Invoke(c) - function.Invoke(b)) -
@@ -17,22 +20,22 @@ public class ParabolaMethod : IOptimisationMethod
         {
             if (function.Invoke(c) < function.Invoke(u))
             {
-                return (a, u);
+                return new BoundedOptimizationContext(a, u);
             }
             else
             {
-                return (c, b);
+                return new BoundedOptimizationContext(c, b);
             }
         }
         else
         {
             if (function.Invoke(c) < function.Invoke(u))
             {
-                return (u, b);
+                return new BoundedOptimizationContext(u, b);
             }
             else
             {
-                return (a, c);
+                return new BoundedOptimizationContext(a, c);
             }
         }
     }

@@ -1,6 +1,8 @@
-﻿namespace Lab1.OptimisationMethods;
+﻿using Lab1.OptimizationContexts;
 
-public class DichotomyMethod : IOptimisationMethod
+namespace Lab1.OptimisationMethods;
+
+public class DichotomyMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
     private decimal _delta;
 
@@ -9,20 +11,21 @@ public class DichotomyMethod : IOptimisationMethod
         _delta = delta;
     }
 
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<decimal, decimal> function)
     {
+        var (a, b) = (context.A, context.B);
         var x1 = (a + b) / 2 - _delta;
         var x2 = (a + b) / 2 + _delta;
 
         if (function.Invoke(x1) < function.Invoke(x2))
         {
-            return (a, x2);
+            return new BoundedOptimizationContext(a, x2);
         }
         if (function.Invoke(x2) < function.Invoke(x1))
         {
-            return (x1, b);
+            return new BoundedOptimizationContext(x1, b);
         }
 
-        return (x1, x2);
+        return new BoundedOptimizationContext(x1, x2);
     }
 }

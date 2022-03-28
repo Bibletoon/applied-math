@@ -1,21 +1,24 @@
-﻿namespace Lab1.OptimisationMethods;
+﻿using Lab1.OptimizationContexts;
 
-public class GoldenRatioMethod : IOptimisationMethod
+namespace Lab1.OptimisationMethods;
+
+public class GoldenRatioMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
-    private static readonly decimal GoldenRatioProportion = (decimal)((1+Math.Sqrt(5))/2);
+    private static readonly decimal GoldenRatioProportion = (decimal) ((1 + Math.Sqrt(5)) / 2);
 
-    public (decimal, decimal) FindNewInterval(decimal a, decimal b, Func<decimal, decimal> function)
+    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<decimal, decimal> function)
     {
+        var (a, b) = (context.A, context.B);
         var x1 = b - (b - a) / GoldenRatioProportion;
         var x2 = a + (b - a) / GoldenRatioProportion;
 
         if (function.Invoke(x1) >= function.Invoke(x2))
         {
-            return (x1, b);
+            return new BoundedOptimizationContext(x1, b);
         }
         else
         {
-            return (a, x2);
+            return new BoundedOptimizationContext(a, x2);
         }
     }
 }
