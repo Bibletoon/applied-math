@@ -2,6 +2,7 @@
 using Lab1.OptimizationContexts;
 using Lab1.Results;
 using Lab1.Tools;
+using static System.Math;
 
 namespace Lab1;
 
@@ -20,7 +21,8 @@ public static class Program
         var goldenRatioMethod = new GoldenRatioMethod();
         var brentMethod = new CombinedBrentMethod();
 
-        var func = (double arg) => Math.Exp(Math.Sin(arg)) * arg * arg;
+        // var func = (double arg) => Exp(Sin(arg + 1)) * Pow(arg + 1, 2);
+        var func = (double x) => Sin(x) - Log(Pow(x, 2)) - 1;
         var spreadsheetGenerator = new SpreadsheetGenerator();
 
         var dihContext = new BoundedOptimizationContext(a, b);
@@ -36,7 +38,8 @@ public static class Program
         RunMethod(accuracyList, func, goldenRatioMethod, goldenRatioContext, spreadsheetGenerator);
 
         var brentContext = new BrentOptimizationContext(a, b);
-        RunMethod(accuracyList, func, brentMethod, brentContext, spreadsheetGenerator, (m, acc) => m.EqualityAccuracy = acc / 100);
+        RunMethod(accuracyList, func, brentMethod, brentContext, spreadsheetGenerator,
+            (m, acc) => m.EqualityAccuracy = acc / 100);
 
         var fileName = "Lab1.xlsx";
         spreadsheetGenerator.Build(fileName);

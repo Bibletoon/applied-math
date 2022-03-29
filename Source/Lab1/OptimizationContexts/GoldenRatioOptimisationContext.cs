@@ -20,4 +20,5 @@ public record GoldenRatioOptimisationContext : IOptimizationContext
     public double B { get; }
     public double? X1 { get; } = null;
     public double? X2 { get; } = null;
+    public bool ShouldExit { get; } = false;
 }
