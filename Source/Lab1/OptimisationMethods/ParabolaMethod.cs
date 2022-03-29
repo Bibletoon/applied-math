@@ -22,7 +22,7 @@ public class ParabolaMethod : IOptimisationMethod<ParabolaOptimisationContext>
 
         if (context.U is not null && Math.Abs(u - context.U.Value) < Accuracy)
         {
-            return new ParabolaOptimisationContext(u, u, true);
+            return new ParabolaOptimisationContext(u, u);
         }
         
         if (c < u)

@@ -37,5 +37,4 @@ public record BrentOptimizationContext : IOptimizationContext
     public double V { get; }
     public double CurrentDistance { get; }
     public double PreviousDistance { get; }
-    public bool ShouldExit { get; } = false;
 }
