@@ -1,30 +1,41 @@
-﻿using Lab1.OptimizationContexts;
+﻿using Lab1.OptimisationMethods;
+using Lab1.OptimizationContexts;
+using Lab1.Results;
 
-namespace Lab1.OptimisationMethods;
+namespace Lab1;
 
 public static class OptimisationMethodRunner
 {
-    public static RunnerResult<TContext> FindFunctionMinimum<TContext>(
-        TContext context,
+    public static RunResult<TContext> FindFunctionMinimum<TContext>(
         double accuracy,
-        int decimalCount,
+        TContext context,
         Func<double, double> function,
         IOptimisationMethod<TContext> optimisationMethod,
-        int iterationsLimit = int.MaxValue) where TContext : IOptimizationContext
+        int iterationsLimit = int.MaxValue)
+        where TContext : IOptimizationContext
     {
+        var decimalCount = 1;
+        var ac = accuracy;
+
+        while (ac < 1)
+        {
+            decimalCount++;
+            ac *= 10;
+        }
+        
         var callsCounterFunc = new FunctionCallsCounter<double, double>(
             function,
             i => Math.Round(i, decimalCount));
 
-        int iterationsCount = 0;
-        List<TContext> intervalsHistory = new List<TContext>() { context };
+        int iterationCount = 0;
+        var intervalsHistory = new List<TContext> { context };
 
         while (Math.Abs(context.B - context.A) >= accuracy &&
                Math.Abs(context.A) >= accuracy &&
                Math.Abs(context.B) >= accuracy &&
-               iterationsCount <= iterationsLimit)
+               iterationCount <= iterationsLimit)
         {
-            iterationsCount++;
+            iterationCount++;
             context = optimisationMethod.FindNewInterval(context, callsCounterFunc.Invoke);
             intervalsHistory.Add(context);
         }
@@ -44,10 +55,11 @@ public static class OptimisationMethodRunner
             result = context.B;
         }
 
-        return new RunnerResult<TContext>(
+        return new RunResult<TContext>(
+            accuracy,
             result,
             callsCounterFunc.CallsCount,
-            iterationsCount,
+            iterationCount,
             intervalsHistory);
     }
 }

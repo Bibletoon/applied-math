@@ -1,5 +1,6 @@
 ﻿using Lab1.OptimisationMethods;
 using Lab1.OptimizationContexts;
+using Lab1.Results;
 using Lab1.Tools;
 
 namespace Lab1;
@@ -8,98 +9,77 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        List<double> accuracyList = new List<double>(){1e-3, 1e-5, 1e-7};
+        var accuracyList = new[] { 1e-3, 1e-5, 1e-7 };
 
         var a = -4.5;
         var b = 2.3;
-        
-        foreach (var accuracy in accuracyList)
-        {
-            var delta = accuracy / 3;
-            var n = 1;
 
-            while (FibonacciCounter.GetNthNumber(n) <= (b-a)/accuracy)
-            {
-                n++;
-            }
-            
-            var dihMethod = new DichotomyMethod(delta);
-            var fibMethod = new FibonacciMethod(n);
-            var parabolaMethod = new ParabolaMethod();
-            var goldenRatioMethod = new GoldenRatioMethod();
-            var brentMethod = new CombinedBrentMethod(accuracy/100);
+        var dihMethod = new DichotomyMethod();
+        var fibMethod = new FibonacciMethod();
+        var parabolaMethod = new ParabolaMethod();
+        var goldenRatioMethod = new GoldenRatioMethod();
+        var brentMethod = new CombinedBrentMethod();
 
-            var func = (double arg) => Math.Exp(Math.Sin(arg)) * arg * arg;
-        
-            var dihResult = OptimisationMethodRunner
-                .FindFunctionMinimum(new BoundedOptimizationContext(a, b),
-                                     accuracy,10, func, dihMethod);
-            var fibResult = OptimisationMethodRunner
-                .FindFunctionMinimum(new BoundedOptimizationContext(a, b),
-                                     accuracy,10, func, fibMethod);
-            var parabolaResult = OptimisationMethodRunner
-                .FindFunctionMinimum(new ParabolaOptimisationContext(a, b),
-                                     accuracy,10, func, parabolaMethod);
-            var goldenRatioResult = OptimisationMethodRunner
-                .FindFunctionMinimum(new GoldenRatioOptimisationContext(a, b),
-                                     accuracy,10, func, goldenRatioMethod);
-            var brentResult = OptimisationMethodRunner
-                .FindFunctionMinimum(new BrentOptimizationContext(a, b),
-                                     accuracy,10, func, brentMethod);
+        var func = (double arg) => Math.Exp(Math.Sin(arg)) * arg * arg;
+        var spreadsheetGenerator = new SpreadsheetGenerator();
 
-            Console.WriteLine(CreateTable(accuracy, dihResult, brentResult, parabolaResult, goldenRatioResult, fibResult));
-            Console.WriteLine();
-        }
+        var dihContext = new BoundedOptimizationContext(a, b);
+        RunMethod(accuracyList, func, dihMethod, dihContext, spreadsheetGenerator, (m, acc) => m.Delta = acc / 3);
+
+        var fibContext = new FibonacciOptimizationContext(a, b);
+        RunMethod(accuracyList, func, fibMethod, fibContext, spreadsheetGenerator, (m, acc) => m.N = GetN(a, b, acc));
+
+        var parabolaContext = new ParabolaOptimisationContext(a, b);
+        RunMethod(accuracyList, func, parabolaMethod, parabolaContext, spreadsheetGenerator);
+
+        var goldenRatioContext = new GoldenRatioOptimisationContext(a, b);
+        RunMethod(accuracyList, func, goldenRatioMethod, goldenRatioContext, spreadsheetGenerator);
+
+        var brentContext = new BrentOptimizationContext(a, b);
+        RunMethod(accuracyList, func, brentMethod, brentContext, spreadsheetGenerator, (m, acc) => m.EqualityAccuracy = acc / 100);
+
+        var fileName = "Lab1.xlsx";
+        spreadsheetGenerator.Build(fileName);
     }
-    
-    
-    // public static void CreatePlot(
-    //     double accuracy,
-    //     RunnerResult dichotomyResult,
-    //     RunnerResult brentResult,
-    //     RunnerResult parabolaResult,
-    //     RunnerResult goldenRatioResult)
-    // {
-    // }
-    
-    public static string CreateTable(
-        double accuracy,
-        RunnerResult<BoundedOptimizationContext> dichotomyResult,
-        RunnerResult<BrentOptimizationContext> brentResult,
-        RunnerResult<ParabolaOptimisationContext> parabolaResult,
-        RunnerResult<GoldenRatioOptimisationContext> goldenRatioResult,
-        RunnerResult<BoundedOptimizationContext> fibResult
-        )
-    {
-        var table = new []
-        {
-            new
-            {
-                AMethod = "Dichotomy", BIterations = dichotomyResult.IterationsCount,
-                CFunctionCalss = dichotomyResult.FunctionCallsCount, DResult = dichotomyResult.Result
-            },
-            new
-            {
-                AMethod = "Brent", BIterations = brentResult.IterationsCount,
-                CFunctionCalss = brentResult.FunctionCallsCount, DResult = brentResult.Result
-            },
-            new
-            {
-                AMethod = "Parabola", BIterations = parabolaResult.IterationsCount,
-                CFunctionCalss = parabolaResult.FunctionCallsCount, DResult = parabolaResult.Result
-            },
-            new
-            {
-                AMethod = "Golden Ratio", BIterations = goldenRatioResult.IterationsCount,
-                CFunctionCalss = goldenRatioResult.FunctionCallsCount, DResult = goldenRatioResult.Result
-            },
-            new
-            {
-                AMethod = "Fibonacci", BIterations = fibResult.IterationsCount,
-                CFunctionCalss = fibResult.FunctionCallsCount, DResult = fibResult.Result
-            },
-        };
 
-        return table.ToMarkdownTable();
+    private static void RunMethod<TMethod, TContext>(
+        IReadOnlyCollection<double> accuracies,
+        Func<double, double> func,
+        TMethod method,
+        TContext context,
+        SpreadsheetGenerator spreadsheetGenerator,
+        Action<TMethod, double>? modifier = null)
+        where TMethod : IOptimisationMethod<TContext>
+        where TContext : IOptimizationContext
+    {
+        var results = new List<RunResult<TContext>>();
+
+        foreach (double accuracy in accuracies)
+        {
+            modifier?.Invoke(method, accuracy);
+            var result = OptimisationMethodRunner.FindFunctionMinimum(
+                accuracy,
+                context,
+                func,
+                method);
+
+            results.Add(result);
+        }
+
+        var optimizationResult = new OptimisationResult<TContext>(method, results);
+        spreadsheetGenerator.AddOptimizationResultToSpreadsheet(optimizationResult);
+    }
+
+
+    private static int GetN(double a, double b, double accuracy)
+    {
+        var n = 1;
+
+        while (FibonacciCounter.GetNthNumber(n) <= (b - a) / accuracy)
+        {
+            n++;
+        }
+
+        return n;
     }
 }

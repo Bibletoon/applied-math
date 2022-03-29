@@ -3,34 +3,30 @@ using Lab1.Tools;
 
 namespace Lab1.OptimisationMethods;
 
-public class FibonacciMethod : IOptimisationMethod<BoundedOptimizationContext>
+public class FibonacciMethod : IOptimisationMethod<FibonacciOptimizationContext>
 {
-    private readonly int _n;
-    private double? _x1;
-    private double? _x2;
+    public string Title => "Fibonacci Method";
+    public int N { get; set; }
 
-    public FibonacciMethod(int n)
-    {
-        _n = n;
-    }
-
-    public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<double, double> function)
+    public FibonacciOptimizationContext FindNewInterval(FibonacciOptimizationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
-        var x1 = _x1 ?? a + (FibonacciCounter.GetNthNumber(_n - 2) / FibonacciCounter.GetNthNumber(_n)) * (b-a);
-        var x2 = _x2 ?? a + (FibonacciCounter.GetNthNumber(_n - 1) / FibonacciCounter.GetNthNumber(_n)) * (b-a);
+        var (px1, px2) = (context.X1, context.X2);
+
+        var x1 = px1 ?? a + (FibonacciCounter.GetNthNumber(N - 2) / FibonacciCounter.GetNthNumber(N)) * (b - a);
+        var x2 = px2 ?? a + (FibonacciCounter.GetNthNumber(N - 1) / FibonacciCounter.GetNthNumber(N)) * (b - a);
 
         if (function.Invoke(x1) > function.Invoke(x2))
         {
-            _x1 = x2;
-            _x2 = b - (_x1 - x1);
-            return new BoundedOptimizationContext(x1, b);
+            px1 = x2;
+            px2 = b - (px1 - x1);
+            return new FibonacciOptimizationContext(x1, b, px1, px2);
         }
         else
         {
-            _x2 = x1;
-            _x1 = a + (x2 - _x2);
-            return new BoundedOptimizationContext(a, x2);
+            px2 = x1;
+            px1 = a + (x2 - px2);
+            return new FibonacciOptimizationContext(a, x2, px1, px2);
         }
     }
 }

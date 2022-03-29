@@ -6,14 +6,16 @@ public class ParabolaMethod : IOptimisationMethod<ParabolaOptimisationContext>
 {
     private readonly Random _random = new Random();
 
+    public string Title => "Parabola Method";
+
     public ParabolaOptimisationContext FindNewInterval(ParabolaOptimisationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
-        
+
         var c = context.C ?? _random.NextDouble() * (b - a) + a;
 
         double u = c - (((c - a) * (c - a)) * (function.Invoke(c) - function.Invoke(b)) -
-                             ((c - b) * (c - b)) * (function.Invoke(c) - function.Invoke(a))) /
+                        ((c - b) * (c - b)) * (function.Invoke(c) - function.Invoke(a))) /
             (2 * ((c - a) * (function.Invoke(c) - function.Invoke(b)) -
                   (c - b) * (function.Invoke(c) - function.Invoke(a))));
 
@@ -26,7 +28,7 @@ public class ParabolaMethod : IOptimisationMethod<ParabolaOptimisationContext>
             else
             {
                 double? cache = (u <= c || u >= b) ? null : u;
-                
+
                 return new ParabolaOptimisationContext(c, b, cache);
             }
         }
@@ -39,7 +41,7 @@ public class ParabolaMethod : IOptimisationMethod<ParabolaOptimisationContext>
             else
             {
                 double? cache = (u <= a || u >= c) ? null : u;
-                
+
                 return new ParabolaOptimisationContext(a, c, cache);
             }
         }
