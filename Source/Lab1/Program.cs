@@ -21,8 +21,8 @@ public static class Program
         var goldenRatioMethod = new GoldenRatioMethod();
         var brentMethod = new CombinedBrentMethod();
 
-        // var func = (double arg) => Exp(Sin(arg + 1)) * Pow(arg + 1, 2);
-        var func = (double x) => Sin(x) - Log(Pow(x, 2)) - 1;
+        var func = (double arg) => Exp(Sin(arg)) * Pow(arg, 2);
+        // var func = (double x) => Sin(x) - Log(Pow(x, 2)) - 1;k
         var spreadsheetGenerator = new SpreadsheetGenerator();
 
         var dihContext = new BoundedOptimizationContext(a, b);
@@ -32,7 +32,8 @@ public static class Program
         RunMethod(accuracyList, func, fibMethod, fibContext, spreadsheetGenerator, (m, acc) => m.N = GetN(a, b, acc));
 
         var parabolaContext = new ParabolaOptimisationContext(a, b);
-        RunMethod(accuracyList, func, parabolaMethod, parabolaContext, spreadsheetGenerator);
+        RunMethod(accuracyList, func, parabolaMethod, parabolaContext, spreadsheetGenerator,
+                  (m, acc) => m.Accuracy = acc);
 
         var goldenRatioContext = new GoldenRatioOptimisationContext(a, b);
         RunMethod(accuracyList, func, goldenRatioMethod, goldenRatioContext, spreadsheetGenerator);

@@ -31,8 +31,6 @@ public static class OptimisationMethodRunner
         var intervalsHistory = new List<TContext> { context };
 
         while (Math.Abs(context.B - context.A) >= accuracy &&
-               Math.Abs(context.A) >= accuracy &&
-               Math.Abs(context.B) >= accuracy &&
                iterationCount <= iterationsLimit)
         {
             iterationCount++;
@@ -41,25 +39,14 @@ public static class OptimisationMethodRunner
         }
 
         double result;
-
-        if (Math.Abs(context.B - context.A) < accuracy)
-        {
-            result = (context.A + context.B) / 2;
-        }
-        else if (Math.Abs(context.A) < accuracy)
-        {
-            result = context.A;
-        }
-        else
-        {
-            result = context.B;
-        }
+        
+        result = (context.A + context.B) / 2;
 
         return new RunResult<TContext>(
-            accuracy,
-            result,
-            callsCounterFunc.CallsCount,
-            iterationCount,
-            intervalsHistory);
+        accuracy,
+        result,
+        callsCounterFunc.CallsCount,
+        iterationCount,
+        intervalsHistory);
     }
 }
