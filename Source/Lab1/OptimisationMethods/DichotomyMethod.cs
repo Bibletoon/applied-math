@@ -4,18 +4,14 @@ namespace Lab1.OptimisationMethods;
 
 public class DichotomyMethod : IOptimisationMethod<BoundedOptimizationContext>
 {
-    private readonly double _delta;
-
-    public DichotomyMethod(double delta)
-    {
-        _delta = delta;
-    }
+    public string Title => "Dichotomy Method";
+    public double Delta { get; set; }
 
     public BoundedOptimizationContext FindNewInterval(BoundedOptimizationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
-        var x1 = (a + b) / 2 - _delta;
-        var x2 = (a + b) / 2 + _delta;
+        var x1 = (a + b) / 2 - Delta;
+        var x2 = (a + b) / 2 + Delta;
 
         if (function.Invoke(x1) < function.Invoke(x2))
         {

@@ -6,12 +6,8 @@ namespace Lab1.OptimisationMethods;
 
 public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
 {
-    private readonly double _equalityAccuracy;
-
-    public CombinedBrentMethod(double equalityAccuracy)
-    {
-        _equalityAccuracy = equalityAccuracy;
-    }
+    public string Title => "Combined Brent Method";
+    public double EqualityAccuracy { get; set; }
 
     public BrentOptimizationContext FindNewInterval(BrentOptimizationContext context, Func<double, double> function)
     {
@@ -53,10 +49,10 @@ public class CombinedBrentMethod : IOptimisationMethod<BrentOptimizationContext>
             else
                 b = u;
 
-            if (fu <= fw || Abs(w - x) < _equalityAccuracy)
+            if (fu <= fw || Abs(w - x) < EqualityAccuracy)
                 return new BrentOptimizationContext(a, b, x, u, w, currentDistance, previousDistance);
 
-            if (fu <= fv || Abs(v - x) < _equalityAccuracy || Abs(v - w) < _equalityAccuracy)
+            if (fu <= fv || Abs(v - x) < EqualityAccuracy || Abs(v - w) < EqualityAccuracy)
                 return new BrentOptimizationContext(a, b, x, w, u, currentDistance, previousDistance);
         }
 

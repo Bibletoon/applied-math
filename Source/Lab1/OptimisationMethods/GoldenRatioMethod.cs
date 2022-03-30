@@ -6,6 +6,8 @@ public class GoldenRatioMethod : IOptimisationMethod<GoldenRatioOptimisationCont
 {
     private static readonly double GoldenRatioProportion = (1 + Math.Sqrt(5)) / 2;
 
+    public string Title => "Golden Ratio Method";
+
     public GoldenRatioOptimisationContext FindNewInterval(GoldenRatioOptimisationContext context, Func<double, double> function)
     {
         var (a, b) = (context.A, context.B);
