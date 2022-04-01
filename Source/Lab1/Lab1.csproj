@@ -7,4 +7,10 @@
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="EPPlus" Version="5.8.8" />
+      <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
+      <PackageReference Include="ToMarkdownTable" Version="0.2.0" />
+    </ItemGroup>
+
 </Project>
