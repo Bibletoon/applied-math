@@ -21,14 +21,16 @@ public abstract class GradientDescentMethod
             if (gradient.Norm(gradient.Count) < task.GradientAccuracy)
                 break;
 
-            var newPoint = GetNextPoint(new NextPointFindParameters(task.Function, currentPoint, currentPoint));
+            var newPoint = GetNextPoint(new NextPointFindParameters(task.Function, currentPoint, gradient));
             double newFunctionValue = task.Function.Invoke(newPoint);
 
             points.Add(newPoint);
 
+            // TODO: Think about this condition
             if ((newPoint - currentPoint).Norm(currentPoint.Count) < task.FunctionAccuracy 
                 && Math.Abs(newFunctionValue - currentFunctionValue) < task.FunctionAccuracy) 
             {
+                // TODO: do we need it for all methods?
                 if (lastPointSatisfy)
                     break;
 
@@ -42,6 +44,5 @@ public abstract class GradientDescentMethod
         return new OptimizationResult(points.Last(), currentFunctionValue, points);
     }
 
-    //TODO: change arguments to one class
     protected abstract Vector<double> GetNextPoint(NextPointFindParameters parameters);
 }
