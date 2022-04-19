@@ -16,6 +16,8 @@ public class ShrinkStepGradientDescentMethod : GradientDescentMethod
         _stepShrinkValue = stepShrinkValue;
     }
 
+    public override string Title => "Shrink Step Gradient Descent Method";
+
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {
         var currentValue = parameters.Function.Invoke(parameters.Point);

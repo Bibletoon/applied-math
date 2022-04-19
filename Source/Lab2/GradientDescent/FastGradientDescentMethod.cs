@@ -19,6 +19,8 @@ public class FastGradientDescentMethod<T> : GradientDescentMethod where T : IOpt
         _accuracy = accuracy;
     }
 
+    public override string Title => $"Fast Gradient Descent Method with {_method.Title}";
+
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {
         var functionForMinimization = new Func<double, double>((x) => parameters.Function.Invoke(parameters.Point-x*parameters.Gradient));

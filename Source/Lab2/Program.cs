@@ -29,7 +29,7 @@ var resultGradient = fastGradient.FindMinimum(task);
 
 var reportTasks = new List<OptimizationTask>()
 {
-    new OptimizationTask("Const Step Gradient", task, resultConst),
+    new OptimizationTask(constStepGradient.Title, task, resultConst),
     new OptimizationTask("Shrink Step Gradient", task, resultShrink),
     new OptimizationTask("Fast Gradient", task, resultGradient),
 };

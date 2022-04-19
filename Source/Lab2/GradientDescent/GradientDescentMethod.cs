@@ -6,6 +6,8 @@ namespace Lab2.GradientDescent;
 
 public abstract class GradientDescentMethod
 {
+    public abstract string Title { get; }
+    
     public OptimizationResult FindMinimum(OptimizationRequest request)
     {
         List<Vector<double>> points = new List<Vector<double>>{request.StartPoint};

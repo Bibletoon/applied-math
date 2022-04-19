@@ -12,6 +12,8 @@ public class ConstStepGradientDescentMethod : GradientDescentMethod
         _stepValue = startStepValue;
     }
 
+    public override string Title => "Const Step Gradient Descent Method";
+
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {
         var currentValue = parameters.Function.Invoke(parameters.Point);
