@@ -23,15 +23,21 @@ var fastGradient =
     new FastGradientDescentMethod<GoldenRatioOptimisationContext>(new GoldenRatioMethod(),
                                                                   new GoldenRatioOptimisationContext(-10, 10), 1e-3);
 
+var fletcherRives =
+    new FletcherRivesMethod<GoldenRatioOptimisationContext>(new GoldenRatioMethod(),
+                              new GoldenRatioOptimisationContext(-10, 10), 1e-3);
+
 var resultConst = constStepGradient.FindMinimum(task);
 var resultShrink = shrinkStepGradient.FindMinimum(task);
 var resultGradient = fastGradient.FindMinimum(task);
+var resultFletcher = fletcherRives.FindMinimum(task);
 
 var reportTasks = new List<OptimizationTask>()
 {
     new OptimizationTask(constStepGradient.Title, task, resultConst),
-    new OptimizationTask("Shrink Step Gradient", task, resultShrink),
-    new OptimizationTask("Fast Gradient", task, resultGradient),
+    new OptimizationTask(shrinkStepGradient.Title, task, resultShrink),
+    new OptimizationTask(fastGradient.Title, task, resultGradient),
+    new OptimizationTask(fletcherRives.Title, task, resultFletcher)
 };
 
 var reporter = new GraphGenerator(reportTasks);
