@@ -6,29 +6,29 @@ namespace Lab2.GradientDescent;
 
 public abstract class GradientDescentMethod
 {
-    public OptimizationResult FindMinimum(OptimizationTask task)
+    public OptimizationResult FindMinimum(OptimizationRequest request)
     {
-        List<Vector<double>> points = new List<Vector<double>>{task.StartPoint};
-        var currentPoint = task.StartPoint;
-        var currentFunctionValue = task.Function.Invoke(currentPoint);
+        List<Vector<double>> points = new List<Vector<double>>{request.StartPoint};
+        var currentPoint = request.StartPoint;
+        var currentFunctionValue = request.Function.Invoke(currentPoint);
 
         var lastPointSatisfy = false;
 
         while (true)
         {
-            var gradient = task.Function.GradientAt(currentPoint);
+            var gradient = request.Function.GradientAt(currentPoint);
             
-            if (gradient.Norm(gradient.Count) < task.GradientAccuracy)
+            if (gradient.Norm(gradient.Count) < request.GradientAccuracy)
                 break;
 
-            var newPoint = GetNextPoint(new NextPointFindParameters(task.Function, currentPoint, gradient));
-            double newFunctionValue = task.Function.Invoke(newPoint);
+            var newPoint = GetNextPoint(new NextPointFindParameters(request.Function, currentPoint, gradient));
+            double newFunctionValue = request.Function.Invoke(newPoint);
 
             points.Add(newPoint);
 
             // TODO: Think about this condition
-            if ((newPoint - currentPoint).Norm(currentPoint.Count) < task.FunctionAccuracy 
-                && Math.Abs(newFunctionValue - currentFunctionValue) < task.FunctionAccuracy) 
+            if ((newPoint - currentPoint).Norm(currentPoint.Count) < request.FunctionAccuracy 
+                && Math.Abs(newFunctionValue - currentFunctionValue) < request.FunctionAccuracy) 
             {
                 // TODO: do we need it for all methods?
                 if (lastPointSatisfy)
