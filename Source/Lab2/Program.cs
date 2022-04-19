@@ -26,7 +26,7 @@ var fastGradient =
 var fletcherRives =
     new FletcherRivesMethod<GoldenRatioOptimisationContext>(new GoldenRatioMethod(),
                               new GoldenRatioOptimisationContext(-10, 10), 1e-3);
-
+// TODO: refactor to lab1 style
 var resultConst = constStepGradient.FindMinimum(task);
 var resultShrink = shrinkStepGradient.FindMinimum(task);
 var resultGradient = fastGradient.FindMinimum(task);
