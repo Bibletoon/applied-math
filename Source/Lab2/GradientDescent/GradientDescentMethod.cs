@@ -23,7 +23,7 @@ public abstract class GradientDescentMethod
             if (gradient.Norm(gradient.Count) < request.GradientAccuracy)
                 break;
 
-            var newPoint = GetNextPoint(new NextPointFindParameters(request.Function, currentPoint, gradient));
+            var newPoint = GetNextPoint(new NextPointFindParameters(request.Function, currentPoint));
             double newFunctionValue = request.Function.Invoke(newPoint);
 
             points.Add(newPoint);

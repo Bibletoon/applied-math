@@ -23,10 +23,10 @@ public class FastGradientDescentMethod<T> : GradientDescentMethod where T : IOpt
 
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {
-        var functionForMinimization = new Func<double, double>((x) => parameters.Function.Invoke(parameters.Point-x*parameters.Gradient));
+        var functionForMinimization = new Func<double, double>((x) => parameters.Function.Invoke(parameters.Point - x * parameters.Function.GradientAt(parameters.Point)));
 
         var result = OptimisationMethodRunner.FindFunctionMinimum(_accuracy, _context, functionForMinimization, _method);
 
-        return parameters.Point - result.Result * parameters.Gradient;
+        return parameters.Point - result.Result * parameters.Function.GradientAt(parameters.Point);
     }
 }

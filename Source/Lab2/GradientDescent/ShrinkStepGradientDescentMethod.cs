@@ -24,10 +24,11 @@ public class ShrinkStepGradientDescentMethod : GradientDescentMethod
         var stepValue = _startStepValue;
         while (true)
         {
-            var newPoint = parameters.Point - stepValue * parameters.Gradient;
+            var gradient = parameters.Function.GradientAt(parameters.Point);
+            var newPoint = parameters.Point - stepValue * gradient;
             var functionValue = parameters.Function.Invoke(newPoint);
 
-            if (functionValue <= currentValue - _stepAccuracy * stepValue * parameters.Gradient.Norm(parameters.Gradient.Count) * parameters.Gradient.Norm(parameters.Gradient.Count) )
+            if (functionValue <= currentValue - _stepAccuracy * stepValue * gradient.Norm(gradient.Count) * gradient.Norm(gradient.Count) )
             {
                 return newPoint;
             }

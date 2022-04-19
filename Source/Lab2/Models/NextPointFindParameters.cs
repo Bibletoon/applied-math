@@ -7,12 +7,10 @@ public class NextPointFindParameters
 {
     public MathFunction Function { get; init; }
     public Vector<double> Point { get; init; }
-    public Vector<double> Gradient { get; init; }
 
-    public NextPointFindParameters(MathFunction function, Vector<double> point, Vector<double> gradient)
+    public NextPointFindParameters(MathFunction function, Vector<double> point)
     {
         Function = function;
         Point = point;
-        Gradient = gradient;
     }
 }

@@ -19,7 +19,7 @@ public class ConstStepGradientDescentMethod : GradientDescentMethod
         var currentValue = parameters.Function.Invoke(parameters.Point);
         while (true)
         {
-            var newPoint = parameters.Point - _stepValue * parameters.Gradient;
+            var newPoint = parameters.Point - _stepValue * parameters.Function.GradientAt(parameters.Point);
             var functionValue = parameters.Function.Invoke(newPoint);
 
             if (currentValue - functionValue > 0)
