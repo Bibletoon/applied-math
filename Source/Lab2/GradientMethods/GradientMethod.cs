@@ -27,7 +27,6 @@ public abstract class GradientMethod
 
             points.Add(newPoint);
 
-            // TODO: Think about this condition
             if ((newPoint - currentPoint).Norm(currentPoint.Count) < request.FunctionAccuracy 
                 && Math.Abs(newFunctionValue - currentFunctionValue) < request.FunctionAccuracy) 
             {
