@@ -1,15 +1,46 @@
-﻿using MathNet.Numerics.LinearAlgebra;
+﻿using Lab2.Models;
+using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using OxyPlot;
 using OxyPlot.Series;
 
 namespace Lab2.Tools;
 
-public class GraphicGenerator
+public class GraphGenerator
 {
-    public static PlotModel GenerateContourSeries(Func<Vector<double>, double> function, List<Vector<double>> points)
+    private readonly List<OptimizationTask> _tasks;
+
+    public GraphGenerator(IEnumerable<OptimizationTask> tasks)
     {
-        var model = new PlotModel() { Title = "ContourSeries" };
+        _tasks = tasks.ToList();
+    }
+
+    public void Generate(string folder)
+    {
+        if (!Directory.Exists(folder))
+            Directory.CreateDirectory(folder);
+        
+        foreach (var task in _tasks)
+        {
+            string graphName =
+                $"Method {task.MethodName} for {task.Request.Function.ToString()} (acc = {task.Request.FunctionAccuracy})";
+
+            PlotModel contourSeriesModel = GenerateContourSeries(graphName, task.Request.Function.Invoke, task.Result.PointsHistory.ToList());
+
+            string fileName = $"{task.MethodName}_{task.Request.Function}_{task.Request.FunctionAccuracy}.svg";
+
+            string filePath = Path.Combine(folder, fileName);
+
+            using FileStream stream = File.Create(filePath);
+
+            SvgExporter.Export(contourSeriesModel, stream, 600, 600, false);
+        }
+    }
+    
+
+    private PlotModel GenerateContourSeries(string Name, Func<Vector<double>, double> function, List<Vector<double>> points)
+    {
+        var model = new PlotModel() { Title = Name };
 
         double x0 = points.Select(p => p[0]).Min();
         double x1 = points.Select(p => p[0]).Max();

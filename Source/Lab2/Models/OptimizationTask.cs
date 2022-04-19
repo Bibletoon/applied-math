@@ -1,19 +1,15 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-
-namespace Lab2.Models;
+﻿namespace Lab2.Models;
 
 public class OptimizationTask
 {
-    public Vector<double> StartPoint { get; init; }
-    public double GradientAccuracy { get; init; }
-    public double FunctionAccuracy { get; init; }
-    public Func<Vector<double>, double> Function { get; init; }
+    public string MethodName { get; init; }
+    public OptimizationRequest Request { get; init; }
+    public OptimizationResult Result { get; init; }
 
-    public OptimizationTask(Vector<double> startPoint, double gradientAccuracy, double functionAccuracy, Func<Vector<double>, double> function)
+    public OptimizationTask(string methodName, OptimizationRequest request, OptimizationResult result)
     {
-        StartPoint = startPoint;
-        GradientAccuracy = gradientAccuracy;
-        FunctionAccuracy = functionAccuracy;
-        Function = function;
+        MethodName = methodName;
+        Request = request;
+        Result = result;
     }
 }
