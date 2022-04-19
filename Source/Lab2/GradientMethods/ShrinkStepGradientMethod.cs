@@ -1,15 +1,15 @@
 ﻿using Lab2.Models;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace Lab2.GradientDescent;
+namespace Lab2.GradientMethods;
 
-public class ShrinkStepGradientDescentMethod : GradientDescentMethod
+public class ShrinkStepGradientMethod : GradientMethod
 {
     private readonly double _startStepValue;
     private readonly double _stepAccuracy;
     private readonly double _stepShrinkValue;
 
-    public ShrinkStepGradientDescentMethod(double startStartStepValue, double stepAccuracy, double stepShrinkValue)
+    public ShrinkStepGradientMethod(double startStartStepValue, double stepAccuracy, double stepShrinkValue)
     {
         _startStepValue = startStartStepValue;
         _stepAccuracy = stepAccuracy;

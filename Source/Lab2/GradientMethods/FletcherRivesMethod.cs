@@ -2,12 +2,11 @@
 using Lab1.OptimisationMethods;
 using Lab1.OptimizationContexts;
 using Lab2.Models;
-using Lab2.Tools;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace Lab2.GradientDescent;
+namespace Lab2.GradientMethods;
 
-public class FletcherRivesMethod<T> : GradientDescentMethod where T : IOptimizationContext
+public class FletcherRivesMethod<T> : GradientMethod where T : IOptimizationContext
 {
     private Vector<double>? _previousAlpha;
     private Vector<double>? _previousPoint;

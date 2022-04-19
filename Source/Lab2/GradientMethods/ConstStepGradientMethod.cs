@@ -1,13 +1,13 @@
 ﻿using Lab2.Models;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace Lab2.GradientDescent;
+namespace Lab2.GradientMethods;
 
-public class ConstStepGradientDescentMethod : GradientDescentMethod
+public class ConstStepGradientMethod : GradientMethod
 {
     private double _stepValue;
 
-    public ConstStepGradientDescentMethod(double startStepValue)
+    public ConstStepGradientMethod(double startStepValue)
     {
         _stepValue = startStepValue;
     }

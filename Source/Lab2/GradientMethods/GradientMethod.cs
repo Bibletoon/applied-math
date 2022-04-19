@@ -1,10 +1,9 @@
 ﻿using Lab2.Models;
-using Lab2.Tools;
 using MathNet.Numerics.LinearAlgebra;
 
-namespace Lab2.GradientDescent;
+namespace Lab2.GradientMethods;
 
-public abstract class GradientDescentMethod
+public abstract class GradientMethod
 {
     public abstract string Title { get; }
     
