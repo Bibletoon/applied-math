@@ -13,8 +13,6 @@ public abstract class GradientMethod
         var currentPoint = request.StartPoint;
         var currentFunctionValue = request.Function.Invoke(currentPoint);
 
-        var lastPointSatisfy = false;
-
         while (true)
         {
             var gradient = request.Function.GradientAt(currentPoint);
@@ -30,12 +28,8 @@ public abstract class GradientMethod
             if ((newPoint - currentPoint).Norm(currentPoint.Count) < request.FunctionAccuracy 
                 && Math.Abs(newFunctionValue - currentFunctionValue) < request.FunctionAccuracy) 
             {
-                // TODO: do we need it for all methods?
-                if (lastPointSatisfy)
-                    break;
-
-                lastPointSatisfy = true;
-            } else lastPointSatisfy = false;
+                break;
+            }
             
             currentPoint = newPoint;
             currentFunctionValue = newFunctionValue;
