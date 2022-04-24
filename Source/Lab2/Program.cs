@@ -74,10 +74,10 @@ foreach (var functionOption in functionOptions)
 
         var reportTasks = new List<OptimizationTask>()
         {
-            new(constStepGradient.Title, task, resultConst),
-            new(shrinkStepGradient.Title, task, resultShrink),
-            new(fastGradient.Title, task, resultGradient),
-            new(fletcherRives.Title, task, resultFletcher)
+            new(constStepGradient.Title, constStepGradient.FullTitle, task, resultConst),
+            new(shrinkStepGradient.Title, shrinkStepGradient.FullTitle, task, resultShrink),
+            new(fastGradient.Title, fastGradient.FullTitle, task, resultGradient),
+            new(fletcherRives.Title, fletcherRives.FullTitle, task, resultFletcher)
         };
         
         reporter.Generate(reportTasks);

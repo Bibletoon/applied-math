@@ -19,7 +19,8 @@ public class FastGradientMethod<T> : GradientMethod where T : IOptimizationConte
         _accuracy = accuracy;
     }
 
-    public override string Title => $"Fast Gradient Descent Method with {_method.Title}";
+    public override string Title => $"Fast Gradient Descent Method";
+    public override string FullTitle => $"Fast GDM with {_method.Title}";
 
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {

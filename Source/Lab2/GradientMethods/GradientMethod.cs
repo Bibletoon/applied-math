@@ -6,6 +6,7 @@ namespace Lab2.GradientMethods;
 public abstract class GradientMethod
 {
     public abstract string Title { get; }
+    public abstract string FullTitle { get; }
     
     public OptimizationResult FindMinimum(OptimizationRequest request)
     {

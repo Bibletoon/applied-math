@@ -18,6 +18,9 @@ public class ShrinkStepGradientMethod : GradientMethod
 
     public override string Title => "Shrink Step Gradient Descent Method";
 
+    public override string FullTitle =>
+        $"Shrink step GDM with start step = {_startStepValue}, shrink coef = {_stepShrinkValue}";
+
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {
         var currentValue = parameters.Function.Invoke(parameters.Point);

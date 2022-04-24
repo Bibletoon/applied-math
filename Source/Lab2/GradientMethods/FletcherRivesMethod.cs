@@ -22,6 +22,7 @@ public class FletcherRivesMethod<T> : GradientMethod where T : IOptimizationCont
     }
 
     public override string Title => "Fletcher-Rives method";
+    public override string FullTitle => $"Fletcher-Rives method with {_method.Title}";
 
     protected override Vector<double> GetNextPoint(NextPointFindParameters parameters)
     {

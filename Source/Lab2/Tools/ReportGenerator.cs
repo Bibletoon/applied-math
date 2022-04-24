@@ -28,7 +28,7 @@ public class ReportGenerator
 
             PlotModel contourSeriesModel = GenerateContourSeries(graphName, task.Request.Function.Invoke, task.Result.PointsHistory.ToList());
 
-            string folderPath = Path.Combine(_rootFolder, task.Request.Function.ToString(), task.MethodName);
+            string folderPath = Path.Combine(_rootFolder, task.Request.Function.ToString(), task.MethodName,  task.MethodFullName);
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
