@@ -1,4 +1,6 @@
-﻿namespace Lab2.Models;
+﻿using Lab2.GradientMethods;
+
+namespace Lab2.Models;
 
 public class OptimizationTask
 {
@@ -7,11 +9,11 @@ public class OptimizationTask
     public OptimizationRequest Request { get; init; }
     public OptimizationResult Result { get; init; }
 
-    public OptimizationTask(string methodName, string methodFullName, OptimizationRequest request, OptimizationResult result)
+    public OptimizationTask(GradientMethod method, OptimizationRequest request, OptimizationResult result)
     {
-        MethodName = methodName;
+        MethodName = method.Title;
         Request = request;
         Result = result;
-        MethodFullName = methodFullName;
+        MethodFullName = method.FullTitle;
     }
 }
