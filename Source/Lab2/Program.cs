@@ -31,9 +31,9 @@ public class Program
             "2x^2+xy+y^2"
         );
 
-        var eFunc = new ConstMathFunction(
-            f => Math.Exp(f[0] * f[1]) - f[0] * f[1],
-            "e^(xy)-xy"
+        var lFun = new ConstMathFunction(
+            f => Math.Log(f[0]*f[0]-f[0]*f[1]+3*f[1]*f[1]+3)+5,
+            "log(x^2-xy+3y^2+3)+5"
         );
 
         var functionOptions = new List<FunctionOptimizationOptions>()
@@ -54,7 +54,16 @@ public class Program
                     new DenseVector(new[] { -1, 0.5 }),
                     new DenseVector(new[] { 2.0, 7 }),
                 }
-            )
+            ),
+            new FunctionOptimizationOptions(
+                lFun,
+                new []
+                {
+                    new DenseVector(new []{10.0, 10}),
+                    new DenseVector(new []{35.0, 72 }),
+                    new DenseVector(new []{1.0, 2}),
+                }
+            ),
         };
 
         var reporter = new ReportGenerator("Report");
@@ -68,8 +77,8 @@ public class Program
 
                 reporter.Generate(RunConstStepMethod(task));
                 reporter.Generate(RunShrinkStepMethod(task));
-                reporter.Generate(RunFastMethod(task));
                 reporter.Generate(RunFletcherMethod(task));
+                reporter.Generate(RunFastMethod(task));
             }
         }
     }
