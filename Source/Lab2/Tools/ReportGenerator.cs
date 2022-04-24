@@ -24,7 +24,7 @@ public class ReportGenerator
         foreach (var task in tasks)
         {
             string graphName =
-                $"{task.MethodName} for {task.Request.Function.ToString()} (acc = {task.Request.FunctionAccuracy})";
+                $"{task.MethodFullName} for {task.Request.Function.ToString()}";
 
             PlotModel contourSeriesModel = GenerateContourSeries(graphName, task.Request.Function.Invoke, task.Result.PointsHistory.ToList());
 
