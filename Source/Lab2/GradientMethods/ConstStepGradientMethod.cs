@@ -25,7 +25,7 @@ public class ConstStepGradientMethod : GradientMethod
             var newPoint = parameters.Point - _stepValue * parameters.Function.GradientAt(parameters.Point);
             var functionValue = parameters.Function.Invoke(newPoint);
 
-            if (currentValue - functionValue > 0)
+            if (currentValue - functionValue >= 0)
             {
                 return newPoint;
             }
