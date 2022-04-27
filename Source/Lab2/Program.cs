@@ -27,13 +27,23 @@ public class Program
         );
 
         var secondQFunc = new ConstMathFunction(
-            f => 2 * f[0] * f[0] + f[0] * f[1] + f[1] * f[1],
-            "2x^2+xy+y^2"
+            f => (f[0] * f[0] + f[0] * f[1] + f[1] * f[1])/500,
+            "(x^2+xy+y^2) div 500"
+        );
+
+        var thirdQFunc = new ConstMathFunction(
+            f => (f[0] * f[0] + f[0] * f[1] + f[1] * f[1]) * 1000,
+            "1000∗(x^2+xy+y^2)"
         );
 
         var lFun = new ConstMathFunction(
             f => Math.Log(f[0]*f[0]-f[0]*f[1]+3*f[1]*f[1]+3)+5,
             "log(x^2-xy+3y^2+3)+5"
+        );
+
+        var nuFun = new ConstMathFunction(
+            f => Math.Pow(f[0] * f[0] + f[1] - 11, 2) + Math.Pow(f[0] + f[1] * f[1] - 7, 2),
+            "(x^2 + y - 11)^2 + (x + y^2 -7)^2"
         );
 
         var functionOptions = new List<FunctionOptimizationOptions>()
@@ -56,6 +66,15 @@ public class Program
                 }
             ),
             new FunctionOptimizationOptions(
+                thirdQFunc,
+                new[]
+                {
+                    new DenseVector(new[] { 273.0, 283 }),
+                    new DenseVector(new[] { -1.0, 2 }),
+                    new DenseVector(new[] { 12.0, 7 }),
+                }
+            ),
+            new FunctionOptimizationOptions(
                 lFun,
                 new []
                 {
@@ -64,6 +83,15 @@ public class Program
                     new DenseVector(new []{1.0, 2}),
                 }
             ),
+            new FunctionOptimizationOptions(
+                nuFun,
+                new []
+                {
+                    new DenseVector(new []{4, 3.5}),
+                    new DenseVector(new []{-2.0, 4}),
+                    new DenseVector(new []{-2, -4.2})
+                }
+                )
         };
 
         var reporter = new ReportGenerator("Report");

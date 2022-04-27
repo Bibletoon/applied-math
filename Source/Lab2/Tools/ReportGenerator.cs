@@ -34,7 +34,7 @@ public class ReportGenerator
 
             var startPointString = $"{task.Request.StartPoint[0]}_{task.Request.StartPoint[1]}";
             
-            string graphPath = Path.Combine(folderPath, $"graph_{startPointString}.svg");
+            string graphPath = Path.Combine(folderPath, $"{graphName}_graph_{startPointString}.svg");
 
             using FileStream stream = File.Create(graphPath);
             
@@ -121,6 +121,6 @@ public class ReportGenerator
 
     private string GenerateReportTableLine(Vector<double> startPoint, Vector<double> result, int pointsCount)
     {
-        return $"| {startPoint[0]} | {startPoint[1]} | ({result[0]},{result[1]}) | {pointsCount - 1} |\n";
+        return $"| {startPoint[0]} | {startPoint[1]} | ({result[0]};{result[1]}) | {pointsCount - 1} |\n";
     }
 }
