@@ -1,0 +1,20 @@
+﻿using MathNet.Numerics.LinearAlgebra;
+
+namespace Lab2.Models.Functions;
+
+// TODO: better name
+public class ConstMathFunction : MathFunction
+{
+    private readonly Func<Vector<double>, double> _function;
+    private readonly string _stringRepresentation;
+
+    public ConstMathFunction(Func<Vector<double>, double> func, string stringRepresentation)
+    {
+        _function = func;
+        _stringRepresentation = stringRepresentation;
+    }
+
+    protected override double GetValue(Vector<double> point) => _function.Invoke(point);
+
+    public override string ToString() => _stringRepresentation;
+}
