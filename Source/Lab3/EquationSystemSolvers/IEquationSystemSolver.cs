@@ -1,8 +1,12 @@
-using MathNet.Numerics.LinearAlgebra;
+using Lab3.EquationSystemSolvers.Requests;
+using Lab3.EquationSystemSolvers.Responses;
 
 namespace Lab3.EquationSystemSolvers;
 
-public interface IEquationSystemSolver
+public interface IEquationSystemSolver<in TRequest, out TResponse>
+    where TRequest : IEquationSystemSolverRequest
+    where TResponse : IEquationSystemSolverResponse
 {
-    Vector<double> Solve(Matrix<double> matrix, Vector<double> result);
+    string Name { get; }
+    TResponse Solve(TRequest request);
 }

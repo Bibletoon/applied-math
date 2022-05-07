@@ -1,15 +1,18 @@
-using Lab3.EquationSystemSolvers;
+using Lab3.EquationSystemSolvers.Requests;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Storage;
+using GenericSolver = Lab3.EquationSystemSolvers.IEquationSystemSolver<
+    Lab3.EquationSystemSolvers.Requests.IEquationSystemSolverRequest,
+    Lab3.EquationSystemSolvers.Responses.IEquationSystemSolverResponse>;
 
 namespace Lab3.Tools;
 
 public class InverseMatrixCalculator
 {
-    private readonly IEquationSystemSolver _equationSystemSolver;
+    private readonly GenericSolver _equationSystemSolver;
 
-    public InverseMatrixCalculator(IEquationSystemSolver equationSystemSolver)
+    public InverseMatrixCalculator(GenericSolver equationSystemSolver)
     {
         _equationSystemSolver = equationSystemSolver;
     }
@@ -26,8 +29,8 @@ public class InverseMatrixCalculator
             SparseVectorStorage<double>? sparseE = SparseVectorStorage<double>.OfInit(n, ii => ii == localI ? 1 : 0);
             var vectorE = new SparseVector(sparseE);
 
-            Vector<double> y = _equationSystemSolver.Solve(l, vectorE);
-            Vector<double> a = _equationSystemSolver.Solve(u, y);
+            Vector<double> y = _equationSystemSolver.Solve(new SimpleEquationSystemSolverRequest(l, vectorE)).Solution;
+            Vector<double> a = _equationSystemSolver.Solve(new SimpleEquationSystemSolverRequest(u, y)).Solution;
             result = result.Append(a.ToColumnMatrix());
         }
 

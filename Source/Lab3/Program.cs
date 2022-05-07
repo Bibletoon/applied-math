@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Lab3.EquationSystemSolvers;
+using Lab3.EquationSystemSolvers.Requests;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
@@ -15,6 +16,8 @@ Matrix<double> matrix = new DenseMatrix(3, 3, new double[]
 
 var result = new DenseVector(new double[] { 4, 7, 9 });
 
-Vector<double> solution = new GaussianEquationSystemSolver().Solve(matrix, result);
+Vector<double> solution = new GaussianEquationSystemSolver()
+    .Solve(new SimpleEquationSystemSolverRequest(matrix, result))
+    .Solution;
 
 Console.WriteLine(solution);

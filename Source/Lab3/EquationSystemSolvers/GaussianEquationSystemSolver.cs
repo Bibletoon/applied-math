@@ -1,12 +1,19 @@
+using Lab3.EquationSystemSolvers.Requests;
+using Lab3.EquationSystemSolvers.Responses;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Lab3.EquationSystemSolvers;
 
-public class GaussianEquationSystemSolver : IEquationSystemSolver
+public class GaussianEquationSystemSolver : IEquationSystemSolver<IEquationSystemSolverRequest,
+    IEquationSystemSolverResponse>
 {
-    public Vector<double> Solve(Matrix<double> matrix, Vector<double> result)
+    public string Name => "Gaussian method";
+
+    public IEquationSystemSolverResponse Solve(IEquationSystemSolverRequest request)
     {
+        var (matrix, result) = (request.Matrix, request.Result);
+
         var n = result.Count;
         Matrix<double> extendedMatrix = matrix.Append(result.ToColumnMatrix());
 
@@ -33,6 +40,6 @@ public class GaussianEquationSystemSolver : IEquationSystemSolver
             solution[i] = extendedMatrix[i, n] / extendedMatrix[i, i];
         }
 
-        return solution;
+        return new SimpleEquationSystemSolverResponse(solution);
     }
 }

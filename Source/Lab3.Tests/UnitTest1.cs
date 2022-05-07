@@ -6,6 +6,7 @@ using Lab3.Tools;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.LinearAlgebra.Storage;
 using NUnit.Framework;
 
 namespace Lab3.Tests;
@@ -13,7 +14,7 @@ namespace Lab3.Tests;
 public class Tests
 {
     private const int CaseCount = 10;
-    
+
     private InverseMatrixCalculator _inverseMatrixCalculator = null!;
 
     [SetUp]
@@ -26,7 +27,15 @@ public class Tests
     {
         for (var i = 0; i < CaseCount; i++)
         {
-            yield return NextMatrix();
+            Matrix matrix;
+
+            do
+            {
+                matrix = NextMatrix();
+            }
+            while (IsInvalid(matrix.Inverse()));
+
+            yield return matrix;
         }
     }
 
@@ -36,8 +45,10 @@ public class Tests
     {
         var result = LuFactorizator.Factorize(matrix);
 
-        Console.WriteLine(result.L);
-        Console.WriteLine(result.U);
+        Console.WriteLine(matrix.ToString(matrix.RowCount, matrix.ColumnCount));
+        Console.WriteLine((result.L * result.U).ToString(matrix.RowCount, matrix.ColumnCount));
+        Console.WriteLine(result.L.ToString(matrix.RowCount, matrix.ColumnCount));
+        Console.WriteLine(result.U.ToString(matrix.RowCount, matrix.ColumnCount));
 
         Assert.IsTrue(matrix.AlmostEqual(result.L * result.U, 3), "Incorrect LU decomposition.");
     }
@@ -48,17 +59,29 @@ public class Tests
     {
         Matrix<double> inversed = _inverseMatrixCalculator.Calculate(matrix);
         var identity = SparseMatrix.CreateIdentity(matrix.ColumnCount);
-        
-        Assert.IsTrue(identity.AlmostEqual(matrix * inversed, 3), "Incorrect inverse matrix.");
+
+        Console.WriteLine(matrix.ToString(matrix.RowCount, matrix.ColumnCount));
+        Console.WriteLine(inversed.ToString(matrix.RowCount, matrix.ColumnCount));
+
+        Assert.IsTrue(identity.AlmostEqual(matrix * inversed, 0d), "Incorrect inverse matrix.");
     }
 
     private static Matrix NextMatrix()
     {
         var size = Random.Shared.Next(5, 20);
-        var storage = Enumerable.Range(0, size * size).Select(_ => NextDouble()).ToArray();
-        return new DenseMatrix(size, size, storage);
+        var values = Enumerable.Range(0, size * size).Select(_ => NextDouble()).ToArray();
+        var storage = SparseCompressedRowMatrixStorage<double>.OfInit(size, size, (i, j) => values[i * size + j]);
+        return new SparseMatrix(storage);
     }
 
     private static double NextDouble()
-        => Random.Shared.NextDouble() * Random.Shared.Next();
+        => Random.Shared.NextDouble() < 0.2 ? Random.Shared.Next() : 0;
+
+    private static bool IsInvalid(Matrix<double> matrix)
+    {
+        return matrix
+            .EnumerateRows()
+            .SelectMany(r => r)
+            .Any(x => double.IsInfinity(x) || double.IsNaN(x));
+    }
 }
