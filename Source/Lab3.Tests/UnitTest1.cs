@@ -28,12 +28,15 @@ public class Tests
         for (var i = 0; i < CaseCount; i++)
         {
             Matrix matrix;
+            Matrix<double> l, u;
 
             do
             {
                 matrix = NextMatrix();
+                var res = LuFactorizator.Factorize(matrix);
+                (l, u) = (res.L, res.U);
             }
-            while (IsInvalid(matrix.Inverse()));
+            while (IsInvalid(l) || IsInvalid(u));
 
             yield return matrix;
         }
@@ -62,8 +65,9 @@ public class Tests
 
         Console.WriteLine(matrix.ToString(matrix.RowCount, matrix.ColumnCount));
         Console.WriteLine(inversed.ToString(matrix.RowCount, matrix.ColumnCount));
+        Console.WriteLine((matrix * inversed).ToString(matrix.RowCount, matrix.ColumnCount));
 
-        Assert.IsTrue(identity.AlmostEqual(matrix * inversed, 0d), "Incorrect inverse matrix.");
+        Assert.IsTrue(identity.AlmostEqual(matrix * inversed, 3), "Incorrect inverse matrix.");
     }
 
     private static Matrix NextMatrix()
@@ -75,7 +79,7 @@ public class Tests
     }
 
     private static double NextDouble()
-        => Random.Shared.NextDouble() < 0.2 ? Random.Shared.Next() : 0;
+        => Random.Shared.NextDouble() < 0.6 ? Random.Shared.Next() : 0;
 
     private static bool IsInvalid(Matrix<double> matrix)
     {
