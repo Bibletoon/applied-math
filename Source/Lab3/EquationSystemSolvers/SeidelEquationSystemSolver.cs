@@ -1,24 +1,26 @@
 using Lab3.EquationSystemSolvers.Requests;
 using Lab3.EquationSystemSolvers.Responses;
+using Lab3.Tools;
 using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace Lab3.EquationSystemSolvers;
 
-public class SeidelEquationSystemSolver : IEquationSystemSolver<IterativeEquationSystemSolverRequest, IterativeEquationSystemSolverResponse>
+public class SeidelEquationSystemSolver : IEquationSystemSolver<
+    IterativeEquationSystemSolverRequest, IterativeEquationSystemSolverResponse>
 {
-    public string Name => $"Seidel method";
+    public string Name => "Seidel method";
+
     public IterativeEquationSystemSolverResponse Solve(IterativeEquationSystemSolverRequest request)
     {
         var (matrix, result, maxIterationCount, accuracy) = request;
-        
+
         var n = matrix.RowCount;
-        var history = new List<Vector<double>>();
-        
-        var x = new DenseVector(new double[n]);
-        var tempX = new DenseVector(new double[n]);
+        var iterationCount = 0;
+
+        Vector<double> x = VectorPool<double>.Get(n, i => result[i] / matrix[i, i]);
+        Vector<double> tempX = VectorPool<double>.Get(n);
         double norm;
-        
+
         do
         {
             for (var i = 0; i < n; i++)
@@ -34,25 +36,25 @@ public class SeidelEquationSystemSolver : IEquationSystemSolver<IterativeEquatio
                 {
                     tempX[i] -= matrix[i, j] * x[j];
                 }
-                
+
                 tempX[i] /= matrix[i, i];
             }
 
-            var log = new DenseVector(result.Count);
-            x.CopyTo(log);
-            history.Add(log);
+            iterationCount++;
 
             norm = CountNorm(x, tempX);
             tempX.CopyTo(x);
         }
-        while (norm > accuracy && history.Count < maxIterationCount);
+        while (norm > accuracy && iterationCount < maxIterationCount);
 
-        return new IterativeEquationSystemSolverResponse(x, history);
+        VectorPool<double>.Return(tempX);
+
+        return new IterativeEquationSystemSolverResponse(x, iterationCount);
     }
 
     private static double CountNorm(Vector<double> first, Vector<double> second)
     {
-        var sum =  first.Zip(second)
+        var sum = first.Zip(second)
             .Select(p => Math.Pow(p.First - p.Second, 2))
             .Sum();
 

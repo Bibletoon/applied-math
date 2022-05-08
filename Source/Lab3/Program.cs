@@ -1,23 +1,81 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using Lab3.EquationSystemSolvers;
+using Lab3.MatrixGenerators;
+using Lab3.Tools;
 
-using Lab3.EquationSystemSolvers;
-using Lab3.EquationSystemSolvers.Requests;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
+Console.WriteLine();
 
-Console.WriteLine("Hello, World!");
+const int n = 20;
+const int resultCount = 5;
+const double accuracy = 0.1;
+const int maxIterationCount = 100;
 
-Matrix<double> matrix = new DenseMatrix(3, 3, new double[]
+var generator = new SpreadsheetGenerator();
+
+var diagonallyDominantMatrixGenerator = new DiagonallyDominantMatrixGenerator();
+var gilbertMatrixGenerator = new GilbertMatrixGenerator();
+var randomMatrixGenerator = new RandomMatrixGenerator();
+
+var jacobi = new JacobiEquationSystemSolver();
+var seidel = new SeidelEquationSystemSolver();
+
+var jacobiRunner = new SolutionRunner(jacobi, diagonallyDominantMatrixGenerator, maxIterationCount);
+Loop(jacobiRunner, 0);
+Console.WriteLine();
+
+var seidelRunner = new SolutionRunner(seidel, diagonallyDominantMatrixGenerator, maxIterationCount);
+Loop(seidelRunner, 1);
+Console.WriteLine();
+
+var gilbertJacobiRunner = new SolutionRunner(jacobi, gilbertMatrixGenerator, maxIterationCount);
+Loop(gilbertJacobiRunner, 2, n, 4);
+Console.WriteLine();
+
+var gilbertSeidelRunner = new SolutionRunner(seidel, gilbertMatrixGenerator, maxIterationCount);
+Loop(gilbertSeidelRunner, 3, n, 4);
+Console.WriteLine();
+
+generator.Build("Lab3.xlsx", "Solution results");
+generator.ClearQueue();
+
+var gaussianIterative = new GaussianIterativeWrapper(new GaussianEquationSystemSolver());
+var gaussianRunner = new SolutionRunner(gaussianIterative, randomMatrixGenerator, maxIterationCount);
+
+var jacobiRandomRunner = new SolutionRunner(jacobi, randomMatrixGenerator, maxIterationCount);
+var seidelRandomRunner = new SolutionRunner(seidel, randomMatrixGenerator, maxIterationCount);
+
+var sizes = new[] { 10, 50, Pow(2) };
+
+foreach (var size in sizes)
 {
-    2, 2, 3,
-    4, 5, 6,
-    7, 8, 9,
-}).Transpose();
+    Loop(seidelRandomRunner, 0, size, neededCount: 1, showVectors: false);
+    Loop(gaussianRunner, 2, size, neededCount: 1, showVectors: false);
+    Loop(jacobiRandomRunner, 3, size, neededCount: 1, showVectors: false);
 
-var result = new DenseVector(new double[] { 4, 7, 9 });
+    Console.WriteLine();
+}
 
-Vector<double> solution = new GaussianEquationSystemSolver()
-    .Solve(new SimpleEquationSystemSolverRequest(matrix, result))
-    .Solution;
+generator.Build("Lab3.xlsx", "Direct/iterative comparison");
 
-Console.WriteLine(solution);
+void Loop(
+    SolutionRunner runner,
+    int rowNumber,
+    int size = n,
+    int k = 0,
+    int neededCount = resultCount,
+    bool showVectors = true)
+{
+    var count = 0;
+
+    while (count != neededCount)
+    {
+        var result = runner.Run(size, k, accuracy);
+        generator.Enqueue(result, rowNumber, showVectors);
+        count++;
+        k++;
+    }
+}
+
+int Pow(int i)
+{
+    return (int)Math.Pow(10, i);
+}

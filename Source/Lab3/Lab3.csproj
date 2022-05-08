@@ -8,11 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="EPPlus" Version="6.0.3" />
       <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Exceptions" />
     </ItemGroup>
 
     <ItemGroup>
