@@ -2,7 +2,6 @@
 using Lab3.MatrixGenerators;
 using Lab3.Tools;
 
-Console.WriteLine();
 
 const int n = 20;
 const int resultCount = 5;
@@ -38,12 +37,12 @@ generator.Build("Lab3.xlsx", "Solution results");
 generator.ClearQueue();
 
 var gaussianIterative = new GaussianIterativeWrapper(new GaussianEquationSystemSolver());
-var gaussianRunner = new SolutionRunner(gaussianIterative, randomMatrixGenerator, maxIterationCount);
+var gaussianRunner = new SolutionRunner(gaussianIterative, diagonallyDominantMatrixGenerator, maxIterationCount);
 
-var jacobiRandomRunner = new SolutionRunner(jacobi, randomMatrixGenerator, maxIterationCount);
-var seidelRandomRunner = new SolutionRunner(seidel, randomMatrixGenerator, maxIterationCount);
+var jacobiRandomRunner = new SolutionRunner(jacobi, diagonallyDominantMatrixGenerator, maxIterationCount);
+var seidelRandomRunner = new SolutionRunner(seidel, diagonallyDominantMatrixGenerator, maxIterationCount);
 
-var sizes = new[] { 10, 50, Pow(2) };
+var sizes = new[] { 10, 50, Pow(2), Pow(3) };
 
 foreach (var size in sizes)
 {
