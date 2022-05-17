@@ -12,14 +12,16 @@ public class SeidelEquationSystemSolver : IEquationSystemSolver<
 
     public IterativeEquationSystemSolverResponse Solve(IterativeEquationSystemSolverRequest request)
     {
-        var (matrix, result, maxIterationCount, accuracy) = request;
+        var (matrix, initialApproximation, result, maxIterationCount, accuracy) = request;
 
         var n = matrix.RowCount;
         var iterationCount = 0;
 
-        Vector<double> x = VectorPool<double>.Get(n, i => result[i] / matrix[i, i]);
+        Vector<double> x = VectorPool<double>.Get(n);
         Vector<double> tempX = VectorPool<double>.Get(n);
         double norm;
+
+        initialApproximation.CopyTo(x);
 
         do
         {

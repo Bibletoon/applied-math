@@ -24,6 +24,7 @@ public class SpreadsheetGenerator
 
             if (showVectors)
             {
+                ws.Cells[row + 1, tempColumn++].Value = "Initially approximated X";
                 ws.Cells[row + 1, tempColumn++].Value = "Actual X";
                 ws.Cells[row + 1, tempColumn++].Value = "Solved X";
             }
@@ -41,8 +42,9 @@ public class SpreadsheetGenerator
             {
                 for (var i = 0; i < result.Actual.Count; i++)
                 {
-                    ws.Cells[row + 2 + i, tempColumn].Value = result.Actual[i];
-                    ws.Cells[row + 2 + i, tempColumn + 1].Value = result.Received[i];
+                    ws.Cells[row + 2 + i, tempColumn].Value = result.InitialApproximation[i];
+                    ws.Cells[row + 2 + i, tempColumn + 1].Value = result.Actual[i];
+                    ws.Cells[row + 2 + i, tempColumn + 2].Value = result.Received[i];
                 }
 
                 tempColumn += 2;
@@ -59,7 +61,7 @@ public class SpreadsheetGenerator
 
         var component = new SpreadsheetRowComponent(
             Draw,
-            showVectors ? 8 : 6,
+            showVectors ? 9 : 6,
             showVectors ? result.Actual.Count + 2 : 2,
             rowNumber);
         _components.Add(component);

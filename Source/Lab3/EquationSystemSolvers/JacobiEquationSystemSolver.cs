@@ -12,7 +12,7 @@ public class JacobiEquationSystemSolver : IEquationSystemSolver<
 
     public IterativeEquationSystemSolverResponse Solve(IterativeEquationSystemSolverRequest request)
     {
-        var (matrix, result, maxIterationCount, accuracy) = request;
+        var (matrix, initialApproximation, result, maxIterationCount, accuracy) = request;
 
         var n = result.Count;
         var iterationCount = 0;
@@ -20,6 +20,8 @@ public class JacobiEquationSystemSolver : IEquationSystemSolver<
         Vector<double> x = VectorPool<double>.Get(n);
         Vector<double> tempX = VectorPool<double>.Get(n);
         double norm;
+
+        initialApproximation.CopyTo(x);
 
         do
         {

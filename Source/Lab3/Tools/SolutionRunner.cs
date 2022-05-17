@@ -24,7 +24,7 @@ public class SolutionRunner
         _matrixGenerator = matrixGenerator;
     }
 
-    public SolutionRunnerResult Run(int n, int k, double accuracy)
+    public SolutionRunnerResult Run(int n, int k, double accuracy, Vector<double> initialApproximation)
     {
         Matrix<double> a = _matrixGenerator.Generate(n, k);
         Vector<double> x = VectorPool<double>.Get(a.ColumnCount, i => i + 1);
@@ -33,7 +33,7 @@ public class SolutionRunner
 
         Console.WriteLine($"Solving system with {n}x{n} and k = {k} {_matrixGenerator.Name}, using {_equationSystemSolver.Name}");
 
-        var request = new IterativeEquationSystemSolverRequest(a, f, _maxIterationCount, accuracy);
+        var request = new IterativeEquationSystemSolverRequest(a, initialApproximation, f, _maxIterationCount, accuracy);
         var response = _equationSystemSolver.Solve(request);
         
         MatrixPool<double>.Return(a);
@@ -42,6 +42,7 @@ public class SolutionRunner
         return new SolutionRunnerResult(
             MethodTitle: _equationSystemSolver.Name,
             MatrixTitle: _matrixGenerator.Name,
+            InitialApproximation: initialApproximation,
             Actual: x,
             Received: response.Solution,
             Accuracy: accuracy,
