@@ -6,7 +6,8 @@ public static class VectorPool<T> where T : struct, IEquatable<T>, IFormattable
 {
     private static readonly Dictionary<int, List<Vector<T>>>
         Pool = new Dictionary<int, List<Vector<T>>>();
-
+    
+    /// <param name="init">Функция считающая значение для i-того элемента</param>
     public static Vector<T> Get(int length, Func<int, T>? init = null)
     {
         if (!Pool.TryGetValue(length, out List<Vector<T>>? list))
