@@ -6,7 +6,7 @@ namespace Lab4.MatrixGenerators;
 
 public class SymmetricDiagonallyDominantMatrixGenerator : ISquareMatrixGenerator<double>
 {
-    public string Name => "Diagonally dominant matrix";
+    public string Name => "Symmetric diagonally dominant matrix";
 
     public Matrix<double> Generate(int size, int k)
     {
