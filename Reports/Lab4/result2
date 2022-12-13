@@ -1,0 +1,216 @@
+## Symmetric diagonally dominant matrix, size = 10, k=0
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 8,105689119020099E-06
+
+Iterations count - 118
+
+## Symmetric diagonally dominant matrix, size = 10, k=1
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 6,667473385846279E-06
+
+Iterations count - 117
+
+## Symmetric diagonally dominant matrix, size = 10, k=3
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 7,521604942439808E-06
+
+Iterations count - 120
+
+## Symmetric diagonally dominant matrix, size = 10, k=5
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 6,779118848498911E-06
+
+Iterations count - 120
+
+## Symmetric diagonally dominant matrix, size = 10, k=15
+
+
+ Found eigen values:
+
+Is right solution - False, accuracy - 0,375
+
+Iterations count - 100000
+
+## Symmetric diagonally dominant matrix, size = 25, k=0
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 8,029789228203299E-06
+
+Iterations count - 893
+
+## Symmetric diagonally dominant matrix, size = 25, k=1
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 7,214251667164717E-06
+
+Iterations count - 869
+
+## Symmetric diagonally dominant matrix, size = 25, k=3
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 6,186541725128336E-06
+
+Iterations count - 862
+
+## Symmetric diagonally dominant matrix, size = 25, k=5
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 6,586102244909853E-06
+
+Iterations count - 884
+
+## Symmetric diagonally dominant matrix, size = 25, k=15
+
+
+ Found eigen values:
+
+Is right solution - False, accuracy - 0,625
+
+Iterations count - 100000
+
+## Symmetric diagonally dominant matrix, size = 50, k=0
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 9,951272346597761E-06
+
+Iterations count - 3642
+
+## Symmetric diagonally dominant matrix, size = 50, k=1
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 9,253646396700788E-06
+
+Iterations count - 3643
+
+## Symmetric diagonally dominant matrix, size = 50, k=3
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 8,818139008326398E-06
+
+Iterations count - 3624
+
+## Symmetric diagonally dominant matrix, size = 50, k=5
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 7,948793609102722E-06
+
+Iterations count - 3655
+
+## Symmetric diagonally dominant matrix, size = 50, k=15
+
+
+ Found eigen values:
+
+Is right solution - False, accuracy - 2,875
+
+Iterations count - 100000
+
+## Gilbert matrix, size = 4, k=5
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 5,790100473107573E-07
+
+Iterations count - 24
+
+## Gilbert matrix, size = 4, k=10
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 7,553424594368332E-06
+
+Iterations count - 76
+
+## Gilbert matrix, size = 4, k=25
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 1,0923653559979929E-05
+
+Iterations count - 270
+
+## Gilbert matrix, size = 4, k=50
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 1,2370334778402101E-05
+
+Iterations count - 618
+
+## Gilbert matrix, size = 4, k=75
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 1,1174533250475757E-05
+
+Iterations count - 1013
+
+## Gilbert matrix, size = 4, k=100
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 1,1298608126890397E-05
+
+Iterations count - 1553
+
+## Gilbert matrix, size = 4, k=150
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 1,2604044794864043E-05
+
+Iterations count - 2440
+
+## Gilbert matrix, size = 4, k=250
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 1,4256308295459374E-05
+
+Iterations count - 4184
+
+## Gilbert matrix, size = 4, k=500
+
+
+ Found eigen values:
+
+Is right solution - True, accuracy - 2,5758795113176085E-05
+
+Iterations count - 9249
+
